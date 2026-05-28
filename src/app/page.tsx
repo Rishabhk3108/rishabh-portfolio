@@ -1,8 +1,10 @@
 'use client';
 
 import { useState, useRef, useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function Home() {
+  const router = useRouter();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [visibleCards, setVisibleCards] = useState<Set<number>>(new Set());
   const [navHidden, setNavHidden] = useState(false);
@@ -11,10 +13,13 @@ export default function Home() {
   const [hoveredInfinity, setHoveredInfinity] = useState(false);
   const [hoveredCert, setHoveredCert] = useState<number | null>(null);
   const [selectedCert, setSelectedCert] = useState<number | null>(null);
+  const [activeNav, setActiveNav] = useState(0);
+  const [pillStyle, setPillStyle] = useState({ left: 0, width: 0 });
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const expSectionRef = useRef<HTMLDivElement>(null);
   const clipRectRef = useRef<SVGRectElement>(null);
   const lastScrollY = useRef(0);
+  const navBtnRefs = useRef<(HTMLButtonElement | null)[]>([]);
 
   useEffect(() => {
     const observers = cardRefs.current.map((ref, i) => {
@@ -42,14 +47,36 @@ export default function Home() {
   useEffect(() => {
     const handleScroll = () => {
       const currentScrollY = window.scrollY;
+
+      // Nav hide / show
       if (currentScrollY > lastScrollY.current && currentScrollY > 80) {
         setNavHidden(true);
       } else if (currentScrollY < lastScrollY.current) {
         setNavHidden(false);
       }
       lastScrollY.current = currentScrollY;
+
+      // Active section detection
+      // Section becomes active when its top reaches the viewport midpoint (~50% visible)
+      const viewportH = window.innerHeight;
+      const midpoint = currentScrollY + viewportH * 0.5;
+      let active = 0;
+      for (const { id, nav } of [
+        { id: 'projects',       nav: 1 },
+        { id: 'about',          nav: 2 },
+        { id: 'certifications', nav: 3 },
+        { id: 'blog',           nav: 4 },
+      ]) {
+        const el = document.getElementById(id);
+        if (el && midpoint >= el.offsetTop) active = nav;
+      }
+      // Contact: activate as soon as footer enters the bottom of the viewport
+      const footer = document.querySelector('footer') as HTMLElement | null;
+      if (footer && currentScrollY + viewportH >= footer.offsetTop + 60) active = 5;
+      setActiveNav(active);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
+    handleScroll(); // sync on mount
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
@@ -82,6 +109,20 @@ export default function Home() {
     const id = requestAnimationFrame(run);
     return () => cancelAnimationFrame(id);
   }, [expVisible]);
+
+  // Slide the pill to whichever nav button is active
+  useEffect(() => {
+    const btn = navBtnRefs.current[activeNav];
+    if (!btn) return;
+    setPillStyle({ left: btn.offsetLeft, width: btn.offsetWidth });
+  }, [activeNav]);
+
+  // Measure initial pill size after first paint
+  useEffect(() => {
+    const btn = navBtnRefs.current[0];
+    if (!btn) return;
+    setPillStyle({ left: btn.offsetLeft, width: btn.offsetWidth });
+  }, []);
 
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => { if (e.key === 'Escape') setSelectedCert(null); };
@@ -176,17 +217,41 @@ export default function Home() {
           {/* Navigation Links - Centered */}
           <div className="hidden md:flex items-center gap-6">
             {/* Inner oval for navigation buttons */}
-            <div 
-              className="flex items-center gap-4 px-4 py-1 rounded-full transition-all duration-300 hover:scale-105 hover:shadow-lg cursor-pointer"
+            <div
+              className="relative flex items-center gap-1 px-2 py-1.5 rounded-full"
               style={{ backgroundColor: isDarkMode ? '#2A2A2A' : '#F5F4F0' }}
             >
-              <button className="px-5 py-2 text-black rounded-full font-medium hover:opacity-90 transition-colors text-sm cursor-pointer" style={{ backgroundColor: '#f2b75f' }}>
-                Home
-              </button>
-              <button className={`px-3 py-1 transition-colors hover:opacity-80 text-sm cursor-pointer ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}>Work</button>
-              <button className={`px-3 py-1 transition-colors hover:opacity-80 text-sm cursor-pointer ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}>About</button>
-              <button className={`px-3 py-1 transition-colors hover:opacity-80 text-sm cursor-pointer ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}>Blog</button>
-              <button className={`px-3 py-1 transition-colors hover:opacity-80 text-sm cursor-pointer ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-600 hover:text-black'}`}>Contact</button>
+              {/* Sliding pill */}
+              <div
+                className="absolute rounded-full pointer-events-none"
+                style={{
+                  left: pillStyle.left,
+                  width: pillStyle.width,
+                  top: '50%',
+                  transform: 'translateY(-50%)',
+                  height: 'calc(100% - 8px)',
+                  backgroundColor: '#f2b75f',
+                  transition: 'left 0.4s cubic-bezier(0.34,1.56,0.64,1), width 0.4s cubic-bezier(0.34,1.56,0.64,1)',
+                }}
+              />
+              {[
+                { label: 'Home',           onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+                { label: 'Work',           onClick: () => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) },
+                { label: 'About',          onClick: () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }) },
+                { label: 'Certifications', onClick: () => router.push('/certifications') },
+                { label: 'Blog',           onClick: () => router.push('/blog') },
+                { label: 'Contact',        onClick: () => document.querySelector('footer')?.scrollIntoView({ behavior: 'smooth' }) },
+              ].map((item, i) => (
+                <button
+                  key={item.label}
+                  ref={el => { navBtnRefs.current[i] = el; }}
+                  onClick={item.onClick}
+                  className="relative z-10 px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-colors duration-200"
+                  style={{ color: activeNav === i ? '#000000' : isDarkMode ? '#9ca3af' : '#6b7280' }}
+                >
+                  {item.label}
+                </button>
+              ))}
             </div>
           </div>
 
@@ -264,7 +329,11 @@ export default function Home() {
 
               {/* Action Buttons */}
               <div className="flex gap-4">
-                <button className="px-8 py-4 text-black rounded-full font-medium hover:opacity-90 transition-colors flex items-center gap-2" style={{ backgroundColor: '#f2b75f' }}>
+                <button
+                  onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
+                  className="px-8 py-4 text-black rounded-full font-medium hover:opacity-90 transition-colors flex items-center gap-2"
+                  style={{ backgroundColor: '#f2b75f' }}
+                >
                   View my work
                   <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 14l-7 7m0 0l-7-7m7 7V3" />
@@ -358,7 +427,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects Section */}
-      <section className="px-6 py-16 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#F4F3EE' }}>
+      <section id="projects" className="px-6 py-16 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#F4F3EE' }}>
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
           <div className="text-center mb-16">
@@ -484,7 +553,7 @@ export default function Home() {
       />
 
       {/* About Section */}
-      <section className="px-6 py-24 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#EAE6D9' }}>
+      <section id="about" className="px-6 py-24 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#EAE6D9' }}>
         <div className="max-w-7xl mx-auto">
           <div className="grid lg:grid-cols-2 gap-16 items-center">
 
@@ -1080,7 +1149,7 @@ export default function Home() {
       <div style={{ height: '100px', background: isDarkMode ? '#181716' : 'linear-gradient(to bottom, #DFDBCD, #D2CDBC)' }} />
 
       {/* Certifications Section */}
-      <section className="pb-28" style={{ backgroundColor: isDarkMode ? '#181716' : '#D2CDBC' }}>
+      <section id="certifications" className="pb-28" style={{ backgroundColor: isDarkMode ? '#181716' : '#D2CDBC' }}>
         {/* Header */}
         <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-14">
           <div className="flex items-start justify-between">
@@ -1096,7 +1165,8 @@ export default function Home() {
               </p>
             </div>
             <button
-              className="mt-2 px-8 py-4 text-black rounded-full font-medium text-sm flex items-center gap-2 hover:gap-3 hover:opacity-90 transition-all duration-200 flex-shrink-0"
+              onClick={() => router.push('/certifications')}
+              className="mt-2 px-8 py-4 text-black rounded-full font-medium text-sm flex items-center gap-2 hover:gap-3 hover:opacity-90 transition-all duration-200 flex-shrink-0 cursor-pointer"
               style={{ backgroundColor: '#f2b75f' }}
             >
               View all
@@ -1314,7 +1384,7 @@ export default function Home() {
       })()}
 
       {/* Blog Section */}
-      <section className="px-6 pb-28 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#D2CDBC' }}>
+      <section id="blog" className="px-6 pb-28 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#D2CDBC' }}>
         <div className="max-w-7xl mx-auto">
           {/* Header row */}
           <div className="flex items-start justify-between mb-14">
@@ -1330,7 +1400,8 @@ export default function Home() {
               </p>
             </div>
             <button
-              className="mt-2 px-8 py-4 text-black rounded-full font-medium text-sm flex items-center gap-2 hover:gap-3 hover:opacity-90 transition-all duration-200 flex-shrink-0"
+              onClick={() => router.push('/blog')}
+              className="mt-2 px-8 py-4 text-black rounded-full font-medium text-sm flex items-center gap-2 hover:gap-3 hover:opacity-90 transition-all duration-200 flex-shrink-0 cursor-pointer"
               style={{ backgroundColor: '#f2b75f' }}
             >
               View all posts
@@ -1431,6 +1502,195 @@ export default function Home() {
           </div>
         </div>
       </section>
+
+      {/* CTA Section — intentionally inverted: dark in light mode, light in dark mode */}
+      <section
+        style={{ backgroundColor: isDarkMode ? '#e9e7da' : '#141210' }}
+        className="px-6 py-32 lg:px-12"
+      >
+        <div className="max-w-3xl mx-auto text-center">
+          {/* Heading */}
+          <h2 className="text-5xl lg:text-6xl font-bold leading-tight mb-6">
+            <span style={{ color: isDarkMode ? '#111827' : '#ffffff' }}>Build your next </span>
+            <span style={{ color: '#f2b75f' }}>modern</span>
+            <span style={{ color: isDarkMode ? '#111827' : '#ffffff' }}> experience</span>
+          </h2>
+
+          {/* Subtitle */}
+          <p
+            className="text-lg leading-relaxed mb-10 max-w-2xl mx-auto"
+            style={{ color: isDarkMode ? '#6b7280' : '#9ca3af' }}
+          >
+            I&apos;m Badhon Biswas (BadhonAI)—a Dhaka-based frontend &amp; mobile developer and UI/UX designer. Let&apos;s create a fast, clean, SEO-friendly product with smooth interactions and modern UI.
+          </p>
+
+          {/* Buttons */}
+          <div className="flex items-center justify-center gap-4 mb-10">
+            <button
+              className="px-8 py-4 rounded-full font-semibold text-black flex items-center gap-2 hover:opacity-90 transition-all duration-200 hover:gap-3"
+              style={{ backgroundColor: '#f2b75f' }}
+            >
+              Start a conversation
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </button>
+
+            <button
+              className="px-8 py-4 rounded-full font-semibold flex items-center gap-2 transition-all duration-200 hover:opacity-80"
+              style={{
+                backgroundColor: isDarkMode ? '#d4d0c8' : '#2a2a2a',
+                color: isDarkMode ? '#111827' : '#e5e7eb',
+              }}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+              </svg>
+              Download CV
+            </button>
+          </div>
+
+          {/* Status strip */}
+          <div
+            className="flex items-center justify-center gap-6 text-sm flex-wrap"
+            style={{ color: isDarkMode ? '#9ca3af' : '#6b7280' }}
+          >
+            <span className="flex items-center gap-2">
+              <span className="w-2 h-2 rounded-full bg-green-500 inline-block" />
+              Available for new projects
+            </span>
+            <span style={{ color: isDarkMode ? '#d1d5db' : '#374151' }}>|</span>
+            <span>Based in Dhaka, Bangladesh</span>
+            <span style={{ color: isDarkMode ? '#d1d5db' : '#374151' }}>|</span>
+            <span>Response within 24h</span>
+          </div>
+        </div>
+      </section>
+      {/* Footer */}
+      <footer style={{ backgroundColor: isDarkMode ? '#181716' : '#ffffff' }}>
+        {/* Main footer grid */}
+        <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
+          {/* Brand column */}
+          <div className="space-y-4 max-w-xs">
+            <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>Badhon Biswas</h3>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>UI/UX Designer &amp; Developer</p>
+            <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
+              Crafting beautiful, functional digital experiences that users love and businesses rely on.
+            </p>
+            <div className={`flex items-center gap-2 text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+              <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+              </svg>
+              Dhaka, Bangladesh
+            </div>
+          </div>
+
+          {/* Navigation column */}
+          <div>
+            <h4 className={`text-base font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-black'}`}>Navigation</h4>
+            <ul className="space-y-4">
+              {['Home', 'Projects', 'About', 'Blog', 'Contact'].map((item) => (
+                <li key={item}>
+                  <button
+                    className={`text-sm transition-colors duration-200 hover:opacity-100 ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}
+                    onClick={() => item === 'Home' && window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  >
+                    {item}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+
+          {/* Connect column */}
+          <div>
+            <h4 className={`text-base font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-black'}`}>Connect</h4>
+            <ul className="space-y-4">
+              {[
+                {
+                  label: 'Github',
+                  icon: (
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 00-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0020 4.77 5.07 5.07 0 0019.91 1S18.73.65 16 2.48a13.38 13.38 0 00-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 005 4.77a5.44 5.44 0 00-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 009 18.13V22" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Linkedin',
+                  icon: (
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
+                      <circle cx="4" cy="4" r="2" stroke="currentColor" strokeWidth={1.5} />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Twitter',
+                  icon: (
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M23 3a10.9 10.9 0 01-3.14 1.53 4.48 4.48 0 00-7.86 3v1A10.66 10.66 0 013 4s-4 9 5 13a11.64 11.64 0 01-7 2c9 5 20 0 20-11.5a4.5 4.5 0 00-.08-.83A7.72 7.72 0 0023 3z" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Instagram',
+                  icon: (
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <rect x="2" y="2" width="20" height="20" rx="5" ry="5" strokeWidth={1.5} stroke="currentColor" />
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z" />
+                      <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" strokeWidth={2} strokeLinecap="round" stroke="currentColor" />
+                    </svg>
+                  ),
+                },
+                {
+                  label: 'Email',
+                  icon: (
+                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                  ),
+                },
+              ].map(({ label, icon }) => (
+                <li key={label}>
+                  <button
+                    className={`flex items-center gap-3 text-sm transition-colors duration-200 ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}
+                  >
+                    {icon}
+                    {label}
+                  </button>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>
+
+        {/* Bottom bar */}
+        <div
+          className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex items-center justify-between"
+          style={{ borderTop: `1px solid ${isDarkMode ? '#2a2a2a' : '#e5e7eb'}` }}
+        >
+          <p className={`text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+            © 2026 Badhon Biswas. All rights reserved.
+          </p>
+          <div className="flex items-center gap-6">
+            <button className={`text-sm transition-colors ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`}>
+              Privacy Policy
+            </button>
+            <button className={`text-sm transition-colors ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`}>
+              Terms of Service
+            </button>
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 ${isDarkMode ? 'bg-[#2a2a2a] text-white hover:bg-[#3a3a3a]' : 'bg-gray-100 text-black hover:bg-gray-200'}`}
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }
