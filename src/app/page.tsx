@@ -300,29 +300,29 @@ export default function Home() {
 
               {/* Main Heading */}
               <div className="space-y-4">
-                <h1 className="text-5xl lg:text-6xl xl:text-7xl font-bold leading-tight">
+                <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
                   <span className={`transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>Hello, I'm</span>
                   <br />
-                  <span style={{ color: '#f2b75f' }}>Badhon Biswas</span>
+                  <span style={{ color: '#f2b75f' }}>Rishabh.K.Sharma</span>
                 </h1>
-                
+
                 <p className={`text-xl lg:text-2xl max-w-lg leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                  Crafting beautiful, functional digital experiences that users love and businesses rely on.
+                  Delivering enterprise-grade AI solutions powered by reasoning, retrieval, and automation.
                 </p>
               </div>
 
               {/* Stats */}
               <div className="flex gap-12">
                 <div>
-                  <div className={`text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>7+</div>
+                  <div className={`text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>3+</div>
                   <div className={`text-sm transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Years Experience</div>
                 </div>
                 <div>
-                  <div className={`text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>50+</div>
+                  <div className={`text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>20+</div>
                   <div className={`text-sm transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Projects Delivered</div>
                 </div>
                 <div>
-                  <div className={`text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>30+</div>
+                  <div className={`text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>10+</div>
                   <div className={`text-sm transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Happy Clients</div>
                 </div>
               </div>
@@ -369,16 +369,9 @@ export default function Home() {
                   style={{ backgroundColor: isDarkMode ? '#57452A' : '#f2b75f' }}
                 ></div>
                 
-                {/* Profile Card - Made larger */}
-                <div className="relative bg-white rounded-3xl p-10 shadow-xl z-10">
-                  <div className="w-96 h-[28rem] bg-gray-200 rounded-2xl flex items-center justify-center overflow-hidden">
-                    {/* Placeholder for profile image */}
-                    <div className="text-center text-gray-500">
-                      <div className="w-40 h-40 bg-gray-300 rounded-full mx-auto mb-6"></div>
-                      <p className="text-lg">Profile Image</p>
-                      <p className="text-sm">Upload your photo here</p>
-                    </div>
-                  </div>
+                {/* Profile Card */}
+                <div className="relative rounded-3xl overflow-hidden shadow-xl z-10 w-[28rem] h-[34rem]">
+                  <img src="/profile.png" alt="Rishabh K. Sharma" className="w-full h-full object-cover" />
                 </div>
               </div>
             </div>
@@ -570,16 +563,8 @@ export default function Home() {
                 <div
                   className="group relative rounded-3xl overflow-hidden shadow-xl z-10 cursor-pointer"
                 >
-                  <div
-                    className="w-[520px] h-[34rem] transition-transform duration-500 ease-out group-hover:scale-[1.05]"
-                    style={{ backgroundColor: isDarkMode ? '#2A2A2A' : '#f0ede4' }}
-                  >
-                    <div className="w-full h-full flex items-end justify-center">
-                      <div className="text-center pb-10 text-gray-400">
-                        <div className="w-24 h-24 rounded-full mx-auto mb-4" style={{ backgroundColor: isDarkMode ? '#3A3A3A' : '#d9d6ce' }} />
-                        <p className="text-sm">Profile photo</p>
-                      </div>
-                    </div>
+                  <div className="w-[520px] h-[34rem] transition-transform duration-500 ease-out group-hover:scale-[1.05] overflow-hidden">
+                    <img src="/profile.png" alt="Rishabh K. Sharma" className="w-full h-full object-cover" style={{ objectPosition: '50% 30%' }} />
                   </div>
                 </div>
               </div>
@@ -589,32 +574,32 @@ export default function Home() {
             <div className="space-y-6">
               {/* Label */}
               <p className="text-sm font-semibold tracking-widest uppercase" style={{ color: '#f2b75f' }}>
-                About Badhon
+                About Rishabh
               </p>
 
               {/* Heading */}
               <h2 className={`text-4xl lg:text-5xl font-bold leading-tight transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                Frontend &amp; Mobile Developer in Dhaka building modern UI
+                AI Engineer architecting production-grade intelligent systems
               </h2>
 
               {/* Bio paragraphs */}
               <p className={`text-base leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                I&apos;m a frontend developer and UI/UX designer with a strong focus on building fast, clean, and modern digital experiences. I blend design thinking with hands-on development to turn ideas into polished products.
+                I&apos;m an AI/ML Engineer specializing in the architecture, design, and deployment of enterprise-scale AI solutions across Generative AI, Agentic AI, Computer Vision, and Machine Learning. My expertise lies in transforming complex business requirements into scalable, production-ready systems that deliver measurable impact.
               </p>
               <p className={`text-base leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                I believe good design feels effortless. Whether I&apos;m crafting a responsive website or a mobile-first interface, I focus on clarity, usability, and performance—solving real problems with simple, scalable solutions.
+                I design end-to-end AI platforms by combining LLMs, multimodal intelligence, knowledge graphs, vector databases, and cloud-native infrastructure. From architecting advanced RAG and GraphRAG systems to building autonomous multi-agent workflows, I focus on creating reliable, secure, and high-performance solutions that operate effectively at scale.
               </p>
               <p className={`text-base leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-                Outside of designing and coding, I enjoy exploring new tools, refining workflows, and experimenting with visuals and motion. I&apos;m driven by curiosity and a constant desire to improve both products and myself.
+                Outside of engineering, I actively mentor aspiring AI professionals, contribute to AI communities, and explore emerging technologies shaping the future of intelligent systems.
               </p>
 
               {/* Stats row */}
               <div className="grid grid-cols-4 gap-3 pt-4">
                 {[
-                  { value: '7+',  label: 'Years\nExperience' },
-                  { value: '50+', label: 'Projects\nDelivered' },
-                  { value: '30+', label: 'Happy\nClients' },
-                  { value: '100', label: 'Success\nRate' },
+                  { value: '3+',  label: 'Years\nExperience' },
+                  { value: '20+', label: 'Projects\nDelivered' },
+                  { value: '10+', label: 'Happy\nClients' },
+                  { value: '100%', label: 'Success\nRate' },
                 ].map((stat) => (
                   <div
                     key={stat.label}
@@ -649,49 +634,69 @@ export default function Home() {
               Skills &amp; Tech Stack
             </p>
             <h2 className={`text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
-              React, UI/UX, and modern frontend tools
+              AI/ML, GenAI &amp; beyond
             </h2>
             <p className={`text-lg max-w-2xl mx-auto leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              My day-to-day stack for building fast, clean, SEO-friendly web apps and mobile experiences: HTML, CSS, JavaScript, React, UI/UX design, and performance-first implementation.
+              End-to-end intelligent systems — from classical ML and deep learning to agentic AI, cloud MLOps, and production deployment.
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-6">
             {[
               {
-                title: 'Design',
-                skills: ['UI Design', 'Visual Design', 'Responsive Design', 'Claymorphism', 'Glassmorphism', 'Motion Design', 'SEO & Meta Tags'],
+                title: 'Data Science',
+                skills: ['Machine Learning', 'Predictive Modeling', 'Time Series', 'Data Visualization', 'Power BI'],
               },
               {
-                title: 'Development',
-                skills: ['HTML & CSS', 'JavaScript', 'React', 'Next.js', 'Node.js', 'Tailwind CSS', 'GSAP', 'Python', 'MongoDB', 'Supabase', 'AWS EC2'],
+                title: 'Deep Learning',
+                skills: ['PyTorch', 'CNN / DCNN', 'RNN / LSTM', 'Computer Vision', 'YOLO', 'TensorFlow', 'OpenCV'],
               },
               {
-                title: 'Tools & Platforms',
-                skills: ['Notion', 'Git', 'Vercel', 'Telegram Bot API', 'Docker', 'Gemini AI', 'Binance API'],
+                title: 'NLP',
+                skills: ['Transformers', 'Text Classification', 'NER', 'Similarity Search', 'STT / TTS', 'Document Understanding'],
+              },
+              {
+                title: 'GenAI',
+                skills: ['LLM Fine-Tuning', 'RAG', 'Graph RAG', 'Prompt Engineering', 'OpenAI', 'Ollama', 'Gemini'],
+              },
+              {
+                title: 'Agentic AI',
+                skills: ['LangGraph', 'CrewAI', 'Azure AI Foundry', 'n8n', 'Multi-Agent'],
+              },
+              {
+                title: 'Cloud & MLOps',
+                skills: ['Azure', 'AWS SageMaker', 'GCP', 'MLflow', 'Docker', 'Azure AI Search', 'Databricks'],
+              },
+              {
+                title: 'Programming',
+                skills: ['Python', 'FastAPI', 'REST APIs', 'Java (J2SE)', 'HTML / CSS'],
+              },
+              {
+                title: 'Databases & Tools',
+                skills: ['Neo4j', 'Pinecone', 'PostgreSQL', 'MongoDB', 'Git', 'Postman', 'Jira'],
               },
             ].map((category, i) => (
               <div
                 key={category.title}
                 ref={(el) => { cardRefs.current[3 + i] = el; }}
-                className={`group rounded-3xl p-8 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'} ${visibleCards.has(3 + i) ? 'card-reveal' : 'opacity-0'}`}
-                style={{ animationDelay: `${i * 180}ms` }}
+                className={`group rounded-3xl p-6 shadow-sm transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'} ${visibleCards.has(3 + i) ? 'card-reveal' : 'opacity-0'}`}
+                style={{ animationDelay: `${i * 120}ms` }}
               >
-                <h3 className={`text-xl font-bold mb-6 transition-colors duration-300 group-hover:text-[#f2b75f] ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                <h3 className={`text-base font-bold mb-4 transition-colors duration-300 group-hover:text-[#f2b75f] ${isDarkMode ? 'text-white' : 'text-black'}`}>
                   {category.title}
                 </h3>
-                <div className="flex flex-wrap gap-3">
-                  {category.skills.map((skill, i) => (
+                <div className="flex flex-wrap gap-2">
+                  {category.skills.map((skill, j) => (
                     <span
                       key={skill}
-                      className={`px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 ${
-                        i === 0
+                      className={`px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 ${
+                        j === 0
                           ? 'text-black cursor-default'
                           : isDarkMode
-                          ? 'bg-[#2A2A2A] text-gray-300 hover:bg-[#3A2A10] hover:text-[#f2b75f] cursor-pointer'
+                          ? 'bg-[#2A2A2A] text-gray-300 hover:bg-[#3A2A10] hover:text-[#f2b75f] cursor-pointer border border-transparent hover:border-[#f2b75f]/20'
                           : 'bg-gray-100 text-gray-600 hover:bg-[#FEF3E2] hover:text-[#c8851a] cursor-pointer'
                       }`}
-                      style={i === 0 ? { backgroundColor: '#f2b75f' } : {}}
+                      style={j === 0 ? { backgroundColor: '#f2b75f' } : {}}
                     >
                       {skill}
                     </span>
@@ -708,81 +713,132 @@ export default function Home() {
 
       {/* Services Section */}
       <section className="px-6 pb-24 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#E0DDD0' }}>
-        <div className="max-w-5xl mx-auto">
+        <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
               Services
             </p>
             <h2 className={`text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
-              Design + Development for modern web &amp; mobile
+              What I build &amp; deliver
             </h2>
             <p className={`text-lg max-w-2xl mx-auto leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              End-to-end UI/UX design and frontend development for responsive websites, React web apps, and mobile-friendly interfaces—focused on clean design, smooth UX, and real-world performance.
+              From intelligent AI systems to full-stack applications — end-to-end engineering across the entire modern AI and software stack.
             </p>
           </div>
 
-          <div className="grid md:grid-cols-2 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6">
             {[
               {
-                title: 'Web Design & Development',
-                description: 'Mobile-first websites and portfolios built with clean HTML, CSS, React, and Tailwind CSS. Responsive, fast, and visually polished across all devices.',
-                tags: ['HTML/CSS/JS', 'React & Tailwind', 'Responsive Design', 'Vercel Deployment'],
+                title: 'AI & Machine Learning',
+                description: 'End-to-end ML solutions for real-world domains — supply chain, healthcare, IoT, and predictive analytics. From data pipelines to deployed models.',
+                tags: ['Machine Learning', 'Deep Learning', 'Computer Vision', 'Time Series', 'PyTorch'],
                 icon: (
                   <svg className="w-5 h-5" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l-3 3 3 3m8-6l3 3-3 3M14 5l-4 14" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.75 3.104v5.714a2.25 2.25 0 01-.659 1.591L5 14.5M9.75 3.104c-.251.023-.501.05-.75.082m.75-.082a24.301 24.301 0 014.5 0m0 0v5.714a2.25 2.25 0 001.357 2.059l.182.088M14.25 3.104c.251.023.501.05.75.082M19.5 9.5a3 3 0 11-6 0 3 3 0 016 0zm-13.5 0a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 ),
               },
               {
-                title: 'UI Design',
-                description: 'Modern interface design with styles like glassmorphism and claymorphism. Smooth animations with GSAP and attention to every visual detail.',
-                tags: ['Visual Design', 'GSAP Animations', 'Glassmorphism', 'Mobile-First'],
+                title: 'GenAI & LLM Engineering',
+                description: 'Building RAG systems, fine-tuning LLMs, and deploying intelligent search and document understanding solutions on Azure and GCP.',
+                tags: ['RAG / Graph RAG', 'LLM Fine-Tuning', 'Azure AI Search', 'Prompt Engineering', 'Neo4j'],
                 icon: (
                   <svg className="w-5 h-5" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072M10.5 8.197l2.88-2.88c.438-.439 1.15-.439 1.59 0l3.712 3.713c.44.44.44 1.152 0 1.59l-2.879 2.88" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09z" />
                   </svg>
                 ),
               },
               {
-                title: 'Bot & Automation Development',
-                description: 'Telegram bots, automation scripts, and AI-powered tools built with Python and modern APIs to streamline workflows and save time.',
-                tags: ['Telegram Bot API', 'Python', 'Gemini AI', 'Automation'],
+                title: 'Agentic AI Systems',
+                description: 'Autonomous multi-agent workflows using LangGraph, CrewAI, and Azure AI Foundry for intelligent orchestration and decision-making pipelines.',
+                tags: ['LangGraph', 'CrewAI', 'Azure AI Foundry', 'n8n', 'Multi-Agent'],
                 icon: (
                   <svg className="w-5 h-5" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M6.429 9.75L2.25 12l4.179 2.25m0-4.5l5.571 3 5.571-3m-11.142 0L2.25 7.5 12 2.25l9.75 5.25-4.179 2.25m0 0L21.75 12l-4.179 2.25m0 0l4.179 2.25L12 21.75 2.25 16.5l4.179-2.25m11.142 0l-5.571 3-5.571-3" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 3v1.5M4.5 8.25H3m18 0h-1.5M4.5 12H3m18 0h-1.5m-15 3.75H3m18 0h-1.5M8.25 19.5V21M12 3v1.5m0 15V21m3.75-18v1.5m0 15V21m-9-1.5h10.5a2.25 2.25 0 002.25-2.25V6.75a2.25 2.25 0 00-2.25-2.25H6.75A2.25 2.25 0 004.5 6.75v10.5a2.25 2.25 0 002.25 2.25zm.75-12h9v9h-9v-9z" />
                   </svg>
                 ),
               },
               {
-                title: 'SEO & Web Presence',
-                description: 'Proper meta tags, structured data, and on-page SEO that gets your website noticed by search engines and users alike.',
-                tags: ['Meta Tags', 'Structured Data', 'Performance', 'Analytics'],
+                title: 'Cloud MLOps & Deployment',
+                description: 'Scalable ML pipelines on Azure, AWS SageMaker, and GCP — covering model development, deployment, monitoring, and automation with MLflow and Docker.',
+                tags: ['Azure', 'AWS SageMaker', 'MLflow', 'Docker', 'Databricks'],
                 icon: (
                   <svg className="w-5 h-5" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M8.625 9.75a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H8.25m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0H12m4.125 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm0 0h-.375m-13.5 3.01c0 1.6 1.123 2.994 2.707 3.227 1.087.16 2.185.283 3.293.369V21l4.184-4.183a1.14 1.14 0 01.778-.332 48.294 48.294 0 005.83-.498c1.585-.233 2.708-1.626 2.708-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 15a4.5 4.5 0 004.5 4.5H18a3.75 3.75 0 001.332-7.257 3 3 0 00-3.758-3.848 5.25 5.25 0 00-10.233 2.33A4.502 4.502 0 002.25 15z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Computer Vision',
+                description: 'Object detection, tracking, and video analytics pipelines using YOLO and deep learning models for infrastructure and real-time inference.',
+                tags: ['YOLO', 'OpenCV', 'Image Processing', 'Video Analytics', 'TensorFlow'],
+                icon: (
+                  <svg className="w-5 h-5" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.963-7.178z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'NLP & Document Intelligence',
+                description: 'Text classification, NER, similarity search, and document parsing workflows. Turning unstructured content into structured, actionable insights.',
+                tags: ['NLP', 'NER', 'STT / TTS', 'Document Intelligence', 'Transformers'],
+                icon: (
+                  <svg className="w-5 h-5" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Web Design & UI/UX',
+                description: 'Clean, modern web interfaces with attention to every visual detail. Responsive designs with smooth animations and polished aesthetics.',
+                tags: ['HTML / CSS', 'Responsive Design', 'UI/UX', 'Figma', 'Motion Design'],
+                icon: (
+                  <svg className="w-5 h-5" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M9.53 16.122a3 3 0 00-5.78 1.128 2.25 2.25 0 01-2.4 2.245 4.5 4.5 0 008.4-2.245c0-.399-.078-.78-.22-1.128zm0 0a15.998 15.998 0 003.388-1.62m-5.043-.025a15.994 15.994 0 011.622-3.395m3.42 3.42a15.995 15.995 0 004.764-4.648l3.876-5.814a1.151 1.151 0 00-1.597-1.597L14.146 6.32a15.996 15.996 0 00-4.649 4.763m3.42 3.42a6.776 6.776 0 00-3.42-3.42" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'Full Stack Development',
+                description: 'End-to-end web applications from backend APIs to frontend interfaces. Fast, scalable, and production-ready builds using modern frameworks.',
+                tags: ['Python', 'FastAPI', 'React', 'MongoDB', 'REST APIs', 'PostgreSQL'],
+                icon: (
+                  <svg className="w-5 h-5" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                  </svg>
+                ),
+              },
+              {
+                title: 'DevOps & Infrastructure',
+                description: 'CI/CD pipelines, containerization, and enterprise DevOps practices. Streamlining development workflows and deployment automation at scale.',
+                tags: ['Docker', 'Git / Bitbucket', 'Azure DevOps', 'GitHub Copilot', 'Jira'],
+                icon: (
+                  <svg className="w-5 h-5" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5.25 14.25h13.5m-13.5 0a3 3 0 01-3-3m3 3a3 3 0 100 6h13.5a3 3 0 100-6m-16.5-3a3 3 0 013-3h13.5a3 3 0 013 3m-19.5 0a4.5 4.5 0 01.9-2.7L5.737 5.1a3.375 3.375 0 012.7-1.35h7.126c1.062 0 2.062.5 2.7 1.35l2.587 3.45a4.5 4.5 0 01.9 2.7m0 0a3 3 0 01-3 3m0 3h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008zm-3 6h.008v.008h-.008v-.008zm0-6h.008v.008h-.008v-.008z" />
                   </svg>
                 ),
               },
             ].map((service, i) => (
               <div
                 key={service.title}
-                ref={(el) => { cardRefs.current[6 + i] = el; }}
-                className={`group rounded-3xl p-8 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'} ${visibleCards.has(6 + i) ? 'card-reveal' : 'opacity-0'}`}
-                style={{ animationDelay: `${i * 180}ms` }}
+                ref={(el) => { cardRefs.current[11 + i] = el; }}
+                className={`group rounded-3xl p-7 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'} ${visibleCards.has(11 + i) ? 'card-reveal' : 'opacity-0'}`}
+                style={{ animationDelay: `${i * 120}ms` }}
               >
                 <div
-                  className="w-12 h-12 rounded-full flex items-center justify-center mb-6"
+                  className="w-11 h-11 rounded-full flex items-center justify-center mb-5"
                   style={{ backgroundColor: isDarkMode ? '#2A1F0F' : '#FEF3E2' }}
                 >
                   {service.icon}
                 </div>
-                <h3 className={`text-xl font-bold mb-3 transition-colors duration-300 group-hover:text-[#f2b75f] ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                <h3 className={`text-lg font-bold mb-3 transition-colors duration-300 group-hover:text-[#f2b75f] ${isDarkMode ? 'text-white' : 'text-black'}`}>
                   {service.title}
                 </h3>
-                <p className={`text-sm leading-relaxed mb-6 transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-sm leading-relaxed mb-5 transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                   {service.description}
                 </p>
-                <div className="flex flex-wrap gap-2 mb-6">
+                <div className="flex flex-wrap gap-2">
                   {service.tags.map((tag) => (
                     <span
                       key={tag}
@@ -792,9 +848,6 @@ export default function Home() {
                     </span>
                   ))}
                 </div>
-                <button className="text-sm font-semibold flex items-center gap-1 hover:gap-2 transition-all duration-200" style={{ color: '#f2b75f' }}>
-                  Learn more →
-                </button>
               </div>
             ))}
           </div>
@@ -815,18 +868,18 @@ export default function Home() {
               My journey so far
             </h2>
             <p className={`text-lg max-w-2xl mx-auto leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              From student projects to founding an AI company — each stop on the map shaped who I am as a developer and designer.
+              From academics to enterprise AI — each stop on the map shaped who I am as an engineer and builder.
             </p>
           </div>
 
           {/* Road Map */}
-          <div ref={expSectionRef} className="relative w-full" style={{ height: '620px' }}>
+          <div ref={expSectionRef} className="relative w-full" style={{ height: '420px' }}>
             {/* SVG dotted direction path */}
             <svg
               viewBox="0 0 1200 230"
               preserveAspectRatio="none"
               className="absolute inset-x-0 w-full"
-              style={{ height: '230px', top: '100px', overflow: 'visible' }}
+              style={{ height: '230px', top: '70px', overflow: 'visible' }}
             >
               <defs>
                 <clipPath id="exp-line-clip">
@@ -866,7 +919,7 @@ export default function Home() {
             {/* Infinity destination marker — HTML so it renders crisp at any scale */}
             <div
               className="absolute"
-              style={{ left: '95%', top: '31%', transform: 'translateX(-50%)' }}
+              style={{ left: '95%', top: '38%', transform: 'translateX(-50%)' }}
               onMouseEnter={() => setHoveredInfinity(true)}
               onMouseLeave={() => setHoveredInfinity(false)}
             >
@@ -935,46 +988,64 @@ export default function Home() {
             {/* Nodes */}
             {[
               {
-                label: 'Founder & Developer',
-                company: 'Badhon AI',
-                period: '2025 – Present',
-                description: 'Founded and built Badhon AI, an AI-powered platform combining automation tools, smart bots, and intuitive interfaces. Leading product design, frontend development, and AI integration end-to-end.',
-                bullets: ['AI product design & architecture', 'Full-stack development (Next.js + Python)', 'Telegram bot automation & Gemini AI'],
-                left: '20%',
-                top: '27%',
+                label: 'High School',
+                company: 'Shree Vaishnav Academy',
+                period: 'Before 2019',
+                bullets: ['Foundation in science & academics'],
+                left: '13%',
+                top: '39%',
+                popupUp: false,
               },
               {
-                label: 'Freelance Frontend Developer',
-                company: 'Self Employed',
-                period: '2023 – 2025',
-                description: 'Delivered 30+ client projects including portfolios, dashboards, and landing pages. Focused on pixel-perfect design, responsive layouts, and smooth interactions.',
-                bullets: ['React & Tailwind CSS projects', 'Client communication & delivery', 'Performance optimization & SEO'],
+                label: 'B.Sc. Biotechnology, Life Sciences & Chemistry',
+                company: 'Maharaja Ranjeet Singh College',
+                period: '2019 – 2022',
+                bullets: ['Built analytical and research thinking', 'Transitioned interest toward technology and data'],
+                left: '27%',
+                top: '35%',
+                popupUp: false,
+              },
+              {
+                label: 'Student Intern',
+                company: 'InfoBeans Foundation',
+                period: '2022 – 2024',
+                bullets: ['Learned Full Stack Development', 'Java & MERN stack (MongoDB, Express, React, Node.js)', 'Built real-world projects under mentorship'],
                 left: '41%',
-                top: '42%',
+                top: '55%',
+                popupUp: true,
               },
               {
-                label: 'UI/UX Designer',
-                company: 'Freelance',
-                period: '2022 – 2023',
-                description: 'Designed interfaces for web and mobile apps with a focus on modern aesthetics—glassmorphism, claymorphism, and motion design. Delivered Figma-to-code handoffs.',
-                bullets: ['Figma design systems', 'Motion & micro-interaction design', 'Responsive mobile-first UI'],
-                left: '63%',
-                top: '32%',
+                label: 'AI ML Intern',
+                company: 'InfoBeans Technologies',
+                period: 'Feb 2024 – Jun 2024',
+                bullets: ['Built ML/DL models for NLP, computer vision & predictive analytics', 'Developed LLM-based & GenAI prototypes', 'Deployed models on Azure / AWS'],
+                left: '54%',
+                top: '52%',
+                popupUp: true,
               },
               {
-                label: 'Student Developer',
-                company: 'Personal Projects',
-                period: '2021 – 2022',
-                description: 'Learned web development through building real projects—from simple HTML/CSS pages to interactive JavaScript apps. Laid the foundation for everything that followed.',
-                bullets: ['HTML, CSS, JavaScript fundamentals', 'First React projects', 'Open source experimentation'],
-                left: '83%',
-                top: '30%',
+                label: 'AI ML Engineer',
+                company: 'InfoBeans Technologies',
+                period: '2024 – Present',
+                bullets: ['Built cognitive search system processing 1M+ documents (RAG + GraphRAG)', 'Delivered agentic AI systems using LangGraph, CrewAI & Azure AI Foundry', 'Trained YOLO & video models for real-time inference', 'Led in-house AI initiatives as project lead'],
+                left: '68%',
+                top: '35%',
+                popupUp: false,
+              },
+              {
+                label: 'AI Trainer & Speaker',
+                company: 'Others / Community',
+                period: 'Ongoing',
+                bullets: ['President, InfoBeans Foundation Alumni Council (~400 students)', 'AI/ML Trainer at InfoBeans Foundation', 'Guest lecturer at MU20 University & Sage University', 'AI Blog writer at InfoBeans Technologies'],
+                left: '82%',
+                top: '36%',
+                popupUp: false,
               },
             ].map((exp, i) => (
               <div
                 key={i}
                 className="absolute"
-                style={{ left: exp.left, top: exp.top, transform: 'translateX(-50%)' }}
+                style={{ left: exp.left, top: exp.top, transform: 'translateX(-50%)', zIndex: hoveredExp === i ? 100 : 10 }}
                 onMouseEnter={() => setHoveredExp(i)}
                 onMouseLeave={() => setHoveredExp(null)}
               >
@@ -1013,9 +1084,11 @@ export default function Home() {
                     className={`rounded-2xl shadow-2xl p-6 ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'}`}
                     style={{
                       position: 'absolute',
-                      top: 'calc(100% + 12px)',
+                      ...(exp.popupUp
+                        ? { bottom: 'calc(100% + 12px)' }
+                        : { top: 'calc(100% + 12px)' }),
                       left: '50%',
-                      transform: `translateX(-50%) translateY(${hoveredExp === i ? '0px' : '8px'})`,
+                      transform: `translateX(-50%) translateY(${hoveredExp === i ? '0px' : exp.popupUp ? '-8px' : '8px'})`,
                       width: '300px',
                       opacity: hoveredExp === i ? 1 : 0,
                       pointerEvents: hoveredExp === i ? 'auto' : 'none',
@@ -1037,7 +1110,6 @@ export default function Home() {
                       </div>
                       <span className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{exp.company}</span>
                     </div>
-                    <p className={`text-xs leading-relaxed mb-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{exp.description}</p>
                     <ul className="space-y-2">
                       {exp.bullets.map((b) => (
                         <li key={b} className="flex items-start gap-2">
@@ -1441,8 +1513,8 @@ export default function Home() {
             ].map((post, i) => (
               <div
                 key={i}
-                ref={(el) => { cardRefs.current[10 + i] = el; }}
-                className={`group rounded-3xl overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'} ${visibleCards.has(10 + i) ? 'card-reveal' : 'opacity-0'}`}
+                ref={(el) => { cardRefs.current[20 + i] = el; }}
+                className={`group rounded-3xl overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'} ${visibleCards.has(20 + i) ? 'card-reveal' : 'opacity-0'}`}
                 style={{ animationDelay: `${i * 180}ms` }}
               >
                 {/* Image area */}
