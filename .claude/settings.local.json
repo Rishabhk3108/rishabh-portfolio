@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:www.badhon.online)",
+      "Bash(npx tsc *)",
+      "Bash(findstr \"next\")"
+    ]
+  }
+}
