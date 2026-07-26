@@ -2,119 +2,14 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-
-const allCerts = [
-  {
-    title: 'Machine Learning Specialization',
-    issuer: 'DeepLearning.AI · Coursera',
-    date: 'Nov 2024',
-    category: 'AI / ML',
-    description: 'Supervised & unsupervised learning, neural networks, decision trees, and real-world ML deployment strategies with hands-on Python projects.',
-    skills: ['Python', 'NumPy', 'scikit-learn', 'TensorFlow', 'ML Pipelines'],
-    previewBg: 'linear-gradient(160deg, #0d1b2a 0%, #1a3a5c 50%, #0a1520 100%)',
-  },
-  {
-    title: 'Deep Learning Specialization',
-    issuer: 'DeepLearning.AI · Coursera',
-    date: 'Jul 2024',
-    category: 'AI / ML',
-    description: 'Neural network architectures, CNNs, RNNs, LSTMs, and hyperparameter tuning for production-grade deep learning models across 5 courses.',
-    skills: ['Python', 'TensorFlow', 'Keras', 'CNNs', 'RNNs', 'LSTMs'],
-    previewBg: 'linear-gradient(160deg, #0f1f0f 0%, #1a3a1a 50%, #0a150a 100%)',
-  },
-  {
-    title: 'Generative AI with LLMs',
-    issuer: 'DeepLearning.AI · AWS',
-    date: 'Dec 2024',
-    category: 'AI / ML',
-    description: 'Transformer architecture, fine-tuning strategies, RLHF, prompt engineering, and deploying generative AI models in production with SageMaker.',
-    skills: ['Transformers', 'Fine-tuning', 'RLHF', 'Prompt Eng.', 'SageMaker'],
-    previewBg: 'linear-gradient(160deg, #1a0d20 0%, #3a1a4a 50%, #100815 100%)',
-  },
-  {
-    title: 'LangChain & LLM Engineering',
-    issuer: 'DeepLearning.AI',
-    date: 'Mar 2025',
-    category: 'AI / ML',
-    description: 'Building production LLM applications with LangChain — chains, agents, memory modules, RAG pipelines, and third-party tool integrations.',
-    skills: ['LangChain', 'LLMs', 'RAG', 'Vector DBs', 'Agents', 'Prompt Eng.'],
-    previewBg: 'linear-gradient(160deg, #1a1a0a 0%, #3a3510 50%, #100f05 100%)',
-  },
-  {
-    title: 'AWS Cloud Practitioner',
-    issuer: 'Amazon Web Services',
-    date: 'Sep 2024',
-    category: 'Cloud',
-    description: 'Core AWS services, cloud architecture fundamentals, IAM security best practices, and pricing models for building scalable cloud infrastructure.',
-    skills: ['AWS EC2', 'S3', 'IAM', 'CloudWatch', 'Lambda', 'VPC'],
-    previewBg: 'linear-gradient(160deg, #1a1200 0%, #3d2b00 50%, #110c00 100%)',
-  },
-  {
-    title: 'Google Cloud Fundamentals',
-    issuer: 'Google Cloud · Coursera',
-    date: 'Feb 2025',
-    category: 'Cloud',
-    description: 'Core infrastructure, networking, storage, and compute services on Google Cloud Platform — designed for aspiring cloud architects.',
-    skills: ['GCP', 'BigQuery', 'Cloud Run', 'GKE', 'Pub/Sub'],
-    previewBg: 'linear-gradient(160deg, #0a1520 0%, #1a2f44 50%, #071015 100%)',
-  },
-  {
-    title: 'System Design for ML',
-    issuer: 'Educative.io',
-    date: 'Jan 2025',
-    category: 'MLOps',
-    description: 'End-to-end ML system design covering feature stores, model serving infrastructure, A/B testing frameworks, monitoring, and retraining pipelines.',
-    skills: ['MLOps', 'Feature Stores', 'Model Serving', 'Monitoring', 'CI/CD'],
-    previewBg: 'linear-gradient(160deg, #0a1020 0%, #151e35 50%, #060a12 100%)',
-  },
-  {
-    title: 'Docker & Kubernetes Essentials',
-    issuer: 'KodeKloud',
-    date: 'Oct 2024',
-    category: 'MLOps',
-    description: 'Containerising applications with Docker, orchestrating workloads with Kubernetes, and building CI/CD pipelines for cloud-native production environments.',
-    skills: ['Docker', 'Kubernetes', 'Helm', 'CI/CD', 'YAML', 'Pods'],
-    previewBg: 'linear-gradient(160deg, #051520 0%, #0a2535 50%, #030a10 100%)',
-  },
-  {
-    title: 'React — The Complete Guide',
-    issuer: 'Udemy · Academind',
-    date: 'Aug 2023',
-    category: 'Web Dev',
-    description: 'Advanced React patterns including hooks, context, Redux Toolkit, React Router, and building production-grade SPAs and SSR apps with Next.js.',
-    skills: ['React', 'Redux', 'Hooks', 'Context API', 'Next.js', 'TypeScript'],
-    previewBg: 'linear-gradient(160deg, #0d1a2a 0%, #1a3050 50%, #080f1a 100%)',
-  },
-  {
-    title: 'MongoDB Developer Certification',
-    issuer: 'MongoDB University',
-    date: 'Jun 2024',
-    category: 'Web Dev',
-    description: 'Schema design patterns, aggregation pipelines, indexing strategies, and building highly scalable NoSQL applications with MongoDB Atlas.',
-    skills: ['MongoDB', 'NoSQL', 'Aggregation', 'Atlas', 'Mongoose', 'Indexing'],
-    previewBg: 'linear-gradient(160deg, #0a1a0f 0%, #143020 50%, #050f08 100%)',
-  },
-  {
-    title: 'Python for Data Science & ML',
-    issuer: 'IBM · Coursera',
-    date: 'May 2024',
-    category: 'AI / ML',
-    description: 'Data analysis with Pandas, visualisation with Matplotlib and Seaborn, and machine learning workflows — from data cleaning to model deployment.',
-    skills: ['Python', 'Pandas', 'Matplotlib', 'Seaborn', 'scikit-learn', 'Jupyter'],
-    previewBg: 'linear-gradient(160deg, #1a100a 0%, #35200f 50%, #100a05 100%)',
-  },
-  {
-    title: 'Node.js & Express Masterclass',
-    issuer: 'Udemy',
-    date: 'Apr 2023',
-    category: 'Web Dev',
-    description: 'Building RESTful APIs, authentication with JWT, real-time features with Socket.io, and deploying Node.js services to cloud platforms.',
-    skills: ['Node.js', 'Express', 'JWT', 'REST API', 'Socket.io', 'MongoDB'],
-    previewBg: 'linear-gradient(160deg, #0f1a10 0%, #1e3520 50%, #08100a 100%)',
-  },
-];
-
-const categories = ['All', 'AI / ML', 'Cloud', 'MLOps', 'Web Dev'];
+import {
+  certificates,
+  Certificate,
+  categories,
+  categoryGradients,
+  logoImagePath,
+  certImagePath,
+} from '@/lib/certificates-data';
 
 const CERT_NAV_IDX = 3;
 
@@ -124,6 +19,7 @@ export default function CertificationsPage() {
   const [navHidden, setNavHidden] = useState(false);
   const [search, setSearch] = useState('');
   const [activeCategory, setActiveCategory] = useState('All');
+  const [lightboxCert, setLightboxCert] = useState<Certificate | null>(null);
   const lastScrollY = useRef(0);
   const navBtnRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [pillStyle, setPillStyle] = useState({ left: 0, width: 0 });
@@ -145,6 +41,12 @@ export default function CertificationsPage() {
     setPillStyle({ left: btn.offsetLeft, width: btn.offsetWidth });
   }, []);
 
+  // Lock body scroll when lightbox is open
+  useEffect(() => {
+    document.body.style.overflow = lightboxCert ? 'hidden' : '';
+    return () => { document.body.style.overflow = ''; };
+  }, [lightboxCert]);
+
   const navLinks = [
     { label: 'Home',           action: () => router.push('/') },
     { label: 'Work',           action: () => router.push('/#projects') },
@@ -154,16 +56,23 @@ export default function CertificationsPage() {
     { label: 'Contact',        action: () => router.push('/#contact') },
   ];
 
-  const filtered = allCerts.filter(cert => {
+  const filtered = certificates.filter(cert => {
     const matchCat = activeCategory === 'All' || cert.category === activeCategory;
+    const q = search.toLowerCase();
     const matchSearch =
-      search === '' ||
-      cert.title.toLowerCase().includes(search.toLowerCase()) ||
-      cert.issuer.toLowerCase().includes(search.toLowerCase()) ||
-      cert.description.toLowerCase().includes(search.toLowerCase()) ||
-      cert.skills.some(s => s.toLowerCase().includes(search.toLowerCase()));
+      q === '' ||
+      cert.title.toLowerCase().includes(q) ||
+      cert.issuer.toLowerCase().includes(q) ||
+      cert.description.toLowerCase().includes(q) ||
+      cert.category.toLowerCase().includes(q);
     return matchCat && matchSearch;
   });
+
+  // Category counts for filter pills
+  const catCounts = certificates.reduce<Record<string, number>>((acc, c) => {
+    acc[c.category] = (acc[c.category] ?? 0) + 1;
+    return acc;
+  }, {});
 
   return (
     <div className="min-h-screen" style={{ backgroundColor: isDarkMode ? '#181716' : '#e9e7da' }}>
@@ -178,16 +87,20 @@ export default function CertificationsPage() {
           style={{ backgroundColor: isDarkMode ? '#1E1E1E' : '#EEEDE9' }}
         >
           <div className="flex items-center gap-3 absolute left-6">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-white' : 'bg-black'}`}>
-              <span className={`text-sm font-bold ${isDarkMode ? 'text-black' : 'text-white'}`}>B</span>
-            </div>
+            <button
+              onClick={() => router.push('/')}
+              className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-transparent hover:ring-[#f2b75f] transition-all duration-300"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/profile.png" alt="Rishabh.k. Sharma" className="w-full h-full object-cover" />
+            </button>
             <button
               onClick={() => router.push('/')}
               className={`font-semibold text-lg transition-all duration-300 hover:scale-105 ${isDarkMode ? 'text-white' : 'text-black'}`}
               onMouseEnter={e => ((e.target as HTMLElement).style.color = '#f2b75f')}
               onMouseLeave={e => ((e.target as HTMLElement).style.color = '')}
             >
-              Badhon Biswas
+              Rishabh.k. Sharma
             </button>
           </div>
 
@@ -271,7 +184,7 @@ export default function CertificationsPage() {
           Licenses &amp; Certifications
         </h1>
         <p className={`text-sm max-w-2xl mx-auto leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-          Credentials earned across AI, machine learning, cloud infrastructure, and full-stack development — continuously expanding expertise across the full stack.
+          {certificates.length} credentials earned across AI, machine learning, cloud infrastructure, and full-stack development — continuously expanding expertise across the full stack.
         </p>
       </section>
 
@@ -289,14 +202,17 @@ export default function CertificationsPage() {
               onChange={e => setSearch(e.target.value)}
               className={`flex-1 bg-transparent outline-none text-sm ${isDarkMode ? 'text-white placeholder-gray-500' : 'text-gray-900 placeholder-gray-400'}`}
             />
+            {search && (
+              <button onClick={() => setSearch('')} className={`text-xs ${isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}>✕</button>
+            )}
           </div>
 
-          <div className="flex items-center gap-2 flex-wrap">
+          <div className="flex items-center gap-2 flex-wrap justify-center">
             {categories.map(cat => (
               <button
                 key={cat}
                 onClick={() => setActiveCategory(cat)}
-                className="px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer"
+                className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer"
                 style={
                   activeCategory === cat
                     ? { backgroundColor: '#f2b75f', color: '#000' }
@@ -308,10 +224,23 @@ export default function CertificationsPage() {
                 }
               >
                 {cat}
+                {cat !== 'All' && (
+                  <span className="ml-1.5 text-xs opacity-60">
+                    {catCounts[cat] ?? 0}
+                  </span>
+                )}
+                {cat === 'All' && (
+                  <span className="ml-1.5 text-xs opacity-60">{certificates.length}</span>
+                )}
               </button>
             ))}
           </div>
         </div>
+        {filtered.length !== certificates.length && (
+          <p className={`text-center text-xs mt-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+            Showing {filtered.length} of {certificates.length} certifications
+          </p>
+        )}
       </section>
 
       {/* ── Cert Grid ── */}
@@ -323,76 +252,109 @@ export default function CertificationsPage() {
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
-              {filtered.map((cert, i) => (
+              {filtered.map(cert => (
                 <div
-                  key={i}
+                  key={cert.id}
                   className={`group rounded-3xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'}`}
                 >
-                  {/* Banner */}
-                  <div className="relative h-36" style={{ background: cert.previewBg }}>
-                    <div className="absolute inset-0 flex items-center justify-center">
-                      <div className="w-14 h-14 rounded-2xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }}>
-                        <svg className="w-7 h-7" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth={1.5} viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                        </svg>
-                      </div>
-                    </div>
+                  {/* ── Banner ── */}
+                  <div className="relative h-40 overflow-hidden bg-gray-900">
+                    {cert.hasCert ? (
+                      /* eslint-disable-next-line @next/next/no-img-element */
+                      <img
+                        src={certImagePath(cert.id, cert.certExt)}
+                        alt={cert.title}
+                        className="w-full h-full object-cover"
+                      />
+                    ) : (
+                      <div
+                        className="w-full h-full"
+                        style={{ background: categoryGradients[cert.category] ?? categoryGradients['AI / ML'] }}
+                      />
+                    )}
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.4) 100%)' }}
+                    />
                     {/* Category badge */}
-                    <div className="absolute top-4 left-4">
+                    <div className="absolute top-4 left-4 z-10">
                       <span className="px-3 py-1 rounded-full text-xs font-semibold text-black" style={{ backgroundColor: '#f2b75f' }}>
                         {cert.category}
                       </span>
                     </div>
-                    {/* Quote decoration */}
-                    <div className="absolute top-4 right-4 opacity-30">
-                      <svg viewBox="0 0 32 24" width="24" height="18" fill="#f2b75f">
-                        <path d="M0 24V14.4C0 6.08 5.12 1.44 15.36 0l1.28 2.88C11.52 4.16 8.96 6.72 8.32 11.2H14.4V24H0zm17.6 0V14.4C17.6 6.08 22.72 1.44 32.96 0l1.28 2.88C29.12 4.16 26.56 6.72 25.92 11.2H32V24H17.6z" />
-                      </svg>
-                    </div>
                   </div>
 
-                  {/* Content */}
+                  {/* ── Content ── */}
                   <div className="p-6 flex flex-col gap-3">
-                    {/* Title */}
-                    <h2 className={`text-base font-bold leading-snug transition-colors duration-200 group-hover:text-[#f2b75f] ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                      {cert.title}
-                    </h2>
+                    {/* Logo + title + issuer */}
+                    <div className="flex items-start gap-3">
+                      <div
+                        className="w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center p-1.5 overflow-hidden mt-0.5"
+                        style={{ backgroundColor: isDarkMode ? '#2A2A2A' : '#F0EFE9', border: `1.5px solid ${isDarkMode ? '#333' : '#e5e7eb'}` }}
+                      >
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={logoImagePath(cert.logoId)}
+                          alt={cert.issuer}
+                          className="w-full h-full object-contain"
+                          onError={e => { (e.currentTarget as HTMLImageElement).style.display = 'none'; }}
+                        />
+                      </div>
+                      <div className="min-w-0">
+                        <h2 className={`text-sm font-bold leading-snug line-clamp-2 transition-colors duration-200 group-hover:text-[#f2b75f] ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                          {cert.title}
+                        </h2>
+                        <p className={`text-xs mt-0.5 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                          {cert.issuer} · {cert.date}
+                        </p>
+                      </div>
+                    </div>
 
-                    {/* Issuer + date */}
-                    <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                      {cert.issuer} · {cert.date}
-                    </p>
+                    {/* Credential ID */}
+                    {cert.credentialId && (
+                      <p className={`text-xs font-mono truncate ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}
+                         title={cert.credentialId}>
+                        ID: {cert.credentialId}
+                      </p>
+                    )}
 
                     {/* Divider */}
                     <div className={`h-px ${isDarkMode ? 'bg-[#2A2A2A]' : 'bg-gray-100'}`} />
 
                     {/* Description */}
-                    <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                    <p className={`text-xs leading-relaxed line-clamp-3 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                       {cert.description}
                     </p>
 
-                    {/* Skills */}
-                    <div className="flex flex-wrap gap-1.5">
-                      {cert.skills.map(skill => (
-                        <span
-                          key={skill}
-                          className={`px-2.5 py-1 rounded-full text-xs font-medium ${isDarkMode ? 'bg-[#2A2A2A] text-gray-300' : 'bg-gray-100 text-gray-600'}`}
+                    {/* Actions */}
+                    <div className="flex items-center gap-4 mt-1 flex-wrap">
+                      {cert.hasCert && (
+                        <button
+                          onClick={() => setLightboxCert(cert)}
+                          className={`text-xs font-medium flex items-center gap-1.5 hover:gap-2.5 transition-all duration-200 cursor-pointer ${isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-700'}`}
                         >
-                          {skill}
-                        </span>
-                      ))}
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
+                          </svg>
+                          View
+                        </button>
+                      )}
+                      {cert.url && (
+                        <a
+                          href={cert.url}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-semibold flex items-center gap-1.5 hover:gap-2.5 transition-all duration-200"
+                          style={{ color: '#f2b75f' }}
+                        >
+                          Verify Credential
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      )}
                     </div>
-
-                    {/* Verify link */}
-                    <button
-                      className="mt-1 text-xs font-semibold flex items-center gap-1.5 hover:gap-2.5 transition-all duration-200 cursor-pointer"
-                      style={{ color: '#f2b75f' }}
-                    >
-                      Verify Credential
-                      <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                      </svg>
-                    </button>
                   </div>
                 </div>
               ))}
@@ -401,11 +363,74 @@ export default function CertificationsPage() {
         </div>
       </section>
 
+      {/* ── Certificate Lightbox ── */}
+      {lightboxCert && (
+        <div
+          className="fixed inset-0 z-[200] flex items-center justify-center p-4 sm:p-8"
+          style={{ backgroundColor: 'rgba(0,0,0,0.88)' }}
+          onClick={() => setLightboxCert(null)}
+        >
+          <div
+            className="relative max-w-4xl w-full"
+            onClick={e => e.stopPropagation()}
+          >
+            {/* Close */}
+            <button
+              className="absolute -top-10 right-0 text-white/70 hover:text-white text-sm flex items-center gap-1.5 transition-colors cursor-pointer"
+              onClick={() => setLightboxCert(null)}
+            >
+              Close ✕
+            </button>
+
+            {/* Certificate image */}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img
+              src={certImagePath(lightboxCert.id, lightboxCert.certExt)}
+              alt={lightboxCert.title}
+              className="w-full h-auto rounded-2xl shadow-2xl object-contain max-h-[80vh]"
+            />
+
+            {/* Caption */}
+            <div className="mt-4 flex items-center gap-3">
+              <div
+                className="w-9 h-9 rounded-xl flex items-center justify-center p-1.5 flex-shrink-0"
+                style={{ backgroundColor: 'rgba(255,255,255,0.1)' }}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={logoImagePath(lightboxCert.logoId)}
+                  alt={lightboxCert.issuer}
+                  className="w-full h-full object-contain"
+                />
+              </div>
+              <div>
+                <p className="text-white text-sm font-semibold leading-snug">{lightboxCert.title}</p>
+                <p className="text-white/50 text-xs">{lightboxCert.issuer} · {lightboxCert.date}</p>
+              </div>
+              {lightboxCert.url && (
+                <a
+                  href={lightboxCert.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="ml-auto text-xs font-semibold flex items-center gap-1.5 px-4 py-2 rounded-full transition-colors"
+                  style={{ backgroundColor: '#f2b75f', color: '#000' }}
+                >
+                  Verify
+                  <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                  </svg>
+                </a>
+              )}
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* ── Footer ── */}
       <footer style={{ backgroundColor: isDarkMode ? '#181716' : '#ffffff' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="space-y-4 max-w-xs">
-            <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>Badhon Biswas</h3>
+            <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>Rishabh.k. Sharma</h3>
             <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>UI/UX Designer &amp; Developer</p>
             <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
               Crafting beautiful, functional digital experiences that users love and businesses rely on.
@@ -468,7 +493,7 @@ export default function CertificationsPage() {
           style={{ borderTop: `1px solid ${isDarkMode ? '#2a2a2a' : '#e5e7eb'}` }}
         >
           <p className={`text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-            © 2026 Badhon Biswas. All rights reserved.
+            © 2026 Rishabh.k. Sharma. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <button className={`text-sm transition-colors cursor-pointer ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`}>Privacy Policy</button>

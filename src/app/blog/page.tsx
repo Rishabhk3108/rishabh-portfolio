@@ -142,16 +142,20 @@ export default function BlogPage() {
         >
           {/* Logo */}
           <div className="flex items-center gap-3 absolute left-6">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center ${isDarkMode ? 'bg-white' : 'bg-black'}`}>
-              <span className={`text-sm font-bold ${isDarkMode ? 'text-black' : 'text-white'}`}>B</span>
-            </div>
+            <button
+              onClick={() => router.push('/')}
+              className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-transparent hover:ring-[#f2b75f] transition-all duration-300"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/profile.png" alt="Rishabh.k. Sharma" className="w-full h-full object-cover" />
+            </button>
             <button
               onClick={() => router.push('/')}
               className={`font-semibold text-lg transition-all duration-300 hover:scale-105 ${isDarkMode ? 'text-white' : 'text-black'}`}
               onMouseEnter={e => ((e.target as HTMLElement).style.color = '#f2b75f')}
               onMouseLeave={e => ((e.target as HTMLElement).style.color = '')}
             >
-              Badhon Biswas
+              Rishabh.k. Sharma
             </button>
           </div>
 
@@ -238,7 +242,7 @@ export default function BlogPage() {
           Articles on frontend, React, and UI/UX
         </h1>
         <p className={`text-sm max-w-2xl mx-auto leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-          Insights from Badhon Biswas on modern frontend development, React, UI/UX design, performance, and SEO-friendly web building.
+          Insights from Rishabh.k. Sharma on modern frontend development, React, UI/UX design, performance, and SEO-friendly web building.
         </p>
       </section>
 
@@ -362,7 +366,7 @@ export default function BlogPage() {
       <footer style={{ backgroundColor: isDarkMode ? '#181716' : '#ffffff' }}>
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
           <div className="space-y-4 max-w-xs">
-            <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>Badhon Biswas</h3>
+            <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>Rishabh.k. Sharma</h3>
             <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>UI/UX Designer &amp; Developer</p>
             <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
               Crafting beautiful, functional digital experiences that users love and businesses rely on.
@@ -424,7 +428,7 @@ export default function BlogPage() {
           style={{ borderTop: `1px solid ${isDarkMode ? '#2a2a2a' : '#e5e7eb'}` }}
         >
           <p className={`text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-            © 2026 Badhon Biswas. All rights reserved.
+            © 2026 Rishabh.k. Sharma. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <button className={`text-sm transition-colors ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`}>Privacy Policy</button>

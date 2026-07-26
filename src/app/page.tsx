@@ -2,6 +2,7 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { certificates, certImagePath, logoImagePath } from '@/lib/certificates-data';
 
 export default function Home() {
   const router = useRouter();
@@ -134,56 +135,9 @@ export default function Home() {
     setIsDarkMode(!isDarkMode);
   };
 
-  const certs = [
-    {
-      title: 'Machine Learning Specialization',
-      issuer: 'DeepLearning.AI · Coursera',
-      date: 'Nov 2024',
-      description: 'Supervised & unsupervised learning, neural networks, decision trees, and real-world ML deployment strategies.',
-      skills: ['Python', 'NumPy', 'scikit-learn', 'TensorFlow', 'ML Pipelines'],
-      previewBg: 'linear-gradient(160deg, #0d1b2a 0%, #1a3a5c 50%, #0a1520 100%)',
-    },
-    {
-      title: 'AWS Cloud Practitioner',
-      issuer: 'Amazon Web Services',
-      date: 'Sep 2024',
-      description: 'Core AWS services, cloud architecture fundamentals, security best practices, and pricing models for scalable cloud infrastructure.',
-      skills: ['AWS EC2', 'S3', 'IAM', 'CloudWatch', 'Lambda'],
-      previewBg: 'linear-gradient(160deg, #1a1200 0%, #3d2b00 50%, #110c00 100%)',
-    },
-    {
-      title: 'Deep Learning Specialization',
-      issuer: 'DeepLearning.AI · Coursera',
-      date: 'Jul 2024',
-      description: 'Neural network architectures, CNNs, RNNs, LSTMs, and hyperparameter tuning for production-grade deep learning models.',
-      skills: ['Python', 'TensorFlow', 'Keras', 'CNNs', 'RNNs', 'LSTMs'],
-      previewBg: 'linear-gradient(160deg, #0f1f0f 0%, #1a3a1a 50%, #0a150a 100%)',
-    },
-    {
-      title: 'LangChain & LLM Engineering',
-      issuer: 'DeepLearning.AI',
-      date: 'Mar 2025',
-      description: 'Building production LLM applications with LangChain — chains, agents, memory, RAG pipelines, and tool integrations.',
-      skills: ['LangChain', 'LLMs', 'RAG', 'Vector DBs', 'Agents', 'Prompt Eng.'],
-      previewBg: 'linear-gradient(160deg, #1a1a0a 0%, #3a3510 50%, #100f05 100%)',
-    },
-    {
-      title: 'System Design for ML',
-      issuer: 'Educative.io',
-      date: 'Jan 2025',
-      description: 'End-to-end ML system design: feature stores, model serving, A/B testing, monitoring, and scalable retraining pipelines.',
-      skills: ['MLOps', 'Feature Stores', 'Model Serving', 'Monitoring', 'CI/CD'],
-      previewBg: 'linear-gradient(160deg, #0a1520 0%, #1a2f44 50%, #071015 100%)',
-    },
-    {
-      title: 'Generative AI with LLMs',
-      issuer: 'DeepLearning.AI · AWS',
-      date: 'Dec 2024',
-      description: 'Transformer architecture, fine-tuning strategies, RLHF, prompt engineering, and production deployment of generative AI models.',
-      skills: ['Transformers', 'Fine-tuning', 'RLHF', 'Prompt Eng.', 'SageMaker'],
-      previewBg: 'linear-gradient(160deg, #1a0d20 0%, #3a1a4a 50%, #100815 100%)',
-    },
-  ];
+  const featuredCerts = certificates.filter(c =>
+    [10, 11, 2, 43, 72, 51, 52, 6, 7, 50].includes(c.id) && c.hasCert
+  );
 
   return (
     <div 
@@ -201,16 +155,20 @@ export default function Home() {
         >
           {/* Logo */}
           <div className="flex items-center gap-3 absolute left-6">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-colors ${isDarkMode ? 'bg-white' : 'bg-black'}`}>
-              <span className={`text-sm font-bold transition-colors ${isDarkMode ? 'text-black' : 'text-white'}`}>B</span>
-            </div>
-            <button 
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-transparent hover:ring-[#f2b75f] transition-all duration-300"
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img src="/profile.png" alt="Rishabh.k. Sharma" className="w-full h-full object-cover" />
+            </button>
+            <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
               className={`font-semibold text-lg transition-all duration-300 hover:scale-105 ${isDarkMode ? 'text-white' : 'text-black'}`}
               onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#f2b75f'}
               onMouseLeave={(e) => (e.target as HTMLElement).style.color = ''}
             >
-              Badhon Biswas
+              Rishabh.k. Sharma
             </button>
           </div>
 
@@ -428,7 +386,7 @@ export default function Home() {
               FEATURED PROJECTS
             </p>
             <h2 className={`text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
-              Selected work by Badhon Biswas
+              Selected work by Rishabh.k. Sharma
             </h2>
             <p className={`text-lg max-w-3xl mx-auto leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               A curated selection of web and mobile projects combining UI/UX design, React development, smooth interactions, and modern, responsive performance-focused interfaces.
@@ -439,7 +397,7 @@ export default function Home() {
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {[
               {
-                name: 'BadhonDev Portfolio',
+                name: 'Developer Portfolio',
                 badge: 'Next.js',
                 description: 'Personal developer portfolio showcasing web development skills, projects, and services. Buil...',
                 tags: ['Portfolio', 'Developer', 'React'],
@@ -1278,64 +1236,74 @@ export default function Home() {
             }}
           />
           <div className="cert-track flex gap-6 py-4">
-            {[...certs, ...certs].map((cert, i) => {
-              const certData = certs[i % certs.length];
-              return (
+            {[...featuredCerts, ...featuredCerts].map((certData, i) => (
+              <div
+                key={i}
+                className="relative flex-shrink-0 w-[300px] cursor-pointer"
+                style={{ height: '260px', zIndex: hoveredCert === i ? 10 : 1 }}
+                onClick={() => setSelectedCert(i)}
+                onMouseEnter={() => setHoveredCert(i)}
+                onMouseLeave={() => setHoveredCert(null)}
+              >
                 <div
-                  key={i}
-                  className="relative flex-shrink-0 w-[300px] cursor-pointer"
-                  style={{ height: '260px', zIndex: hoveredCert === i ? 10 : 1 }}
-                  onClick={() => setSelectedCert(i)}
-                  onMouseEnter={() => setHoveredCert(i)}
-                  onMouseLeave={() => setHoveredCert(null)}
+                  className={`absolute inset-x-0 top-0 rounded-3xl overflow-hidden ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'}`}
+                  style={{
+                    transform: hoveredCert === i ? 'scale(1.07) translateY(-10px)' : 'scale(1) translateY(0)',
+                    transformOrigin: 'center top',
+                    boxShadow: hoveredCert === i
+                      ? '0 28px 56px -10px rgba(0,0,0,0.30)'
+                      : '0 1px 4px rgba(0,0,0,0.08)',
+                    transition: 'transform 0.38s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.38s ease',
+                  }}
                 >
-                  <div
-                    className={`absolute inset-x-0 top-0 rounded-3xl overflow-hidden ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'}`}
-                    style={{
-                      transform: hoveredCert === i ? 'scale(1.07) translateY(-10px)' : 'scale(1) translateY(0)',
-                      transformOrigin: 'center top',
-                      boxShadow: hoveredCert === i
-                        ? '0 28px 56px -10px rgba(0,0,0,0.30)'
-                        : '0 1px 4px rgba(0,0,0,0.08)',
-                      transition: 'transform 0.38s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.38s ease',
-                    }}
-                  >
-                    <div className="relative h-44" style={{ background: certData.previewBg }}>
-                      <div className="absolute inset-0 flex items-center justify-center">
-                        <div className="w-16 h-16 rounded-2xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }}>
-                          <svg className="w-8 h-8" fill="none" stroke="rgba(255,255,255,0.5)" strokeWidth={1.5} viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                          </svg>
-                        </div>
-                      </div>
-                      <div className="absolute top-4 right-4 opacity-35">
-                        <svg viewBox="0 0 32 24" width="28" height="21" fill="#f2b75f">
-                          <path d="M0 24V14.4C0 6.08 5.12 1.44 15.36 0l1.28 2.88C11.52 4.16 8.96 6.72 8.32 11.2H14.4V24H0zm17.6 0V14.4C17.6 6.08 22.72 1.44 32.96 0l1.28 2.88C29.12 4.16 26.56 6.72 25.92 11.2H32V24H17.6z" />
-                        </svg>
-                      </div>
+                  {/* Banner: cert image as full cover */}
+                  <div className="relative h-44 bg-gray-900 overflow-hidden">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={certImagePath(certData.id, certData.certExt)}
+                      alt={certData.title}
+                      className="w-full h-full object-cover"
+                    />
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.35) 100%)' }}
+                    />
+                  </div>
+                  {/* Content: logo circle + title/issuer */}
+                  <div className="px-5 pt-4 pb-5 flex items-start gap-3">
+                    <div
+                      className="w-9 h-9 rounded-full flex-shrink-0 flex items-center justify-center p-1.5 overflow-hidden"
+                      style={{ backgroundColor: isDarkMode ? '#2A2A2A' : '#F0EFE9', border: `1.5px solid ${isDarkMode ? '#333' : '#e5e7eb'}` }}
+                    >
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={logoImagePath(certData.logoId)}
+                        alt={certData.issuer}
+                        className="w-full h-full object-contain"
+                      />
                     </div>
-                    <div className="px-6 pt-5 pb-5">
+                    <div className="min-w-0">
                       <h3
-                        className="text-[15px] font-bold leading-snug mb-1 transition-colors duration-300"
+                        className="text-[14px] font-bold leading-snug line-clamp-2 transition-colors duration-300"
                         style={{ color: hoveredCert === i ? '#f2b75f' : isDarkMode ? '#ffffff' : '#000000' }}
                       >
                         {certData.title}
                       </h3>
-                      <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                      <p className={`text-xs mt-0.5 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
                         {certData.issuer} · {certData.date}
                       </p>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              </div>
+            ))}
           </div>
         </div>
       </section>
 
       {/* Cert detail popup */}
       {selectedCert !== null && (() => {
-        const cert = certs[selectedCert % certs.length];
+        const cert = featuredCerts[selectedCert % featuredCerts.length];
         return (
           <>
             {/* Backdrop */}
@@ -1367,14 +1335,17 @@ export default function Home() {
               }}
             >
               {/* Image header */}
-              <div className="relative h-52" style={{ background: cert.previewBg }}>
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-20 h-20 rounded-2xl flex items-center justify-center" style={{ backgroundColor: 'rgba(255,255,255,0.12)' }}>
-                    <svg className="w-10 h-10" fill="none" stroke="rgba(255,255,255,0.6)" strokeWidth={1.5} viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M9 12l2 2 4-4M7.835 4.697a3.42 3.42 0 001.946-.806 3.42 3.42 0 014.438 0 3.42 3.42 0 001.946.806 3.42 3.42 0 013.138 3.138 3.42 3.42 0 00.806 1.946 3.42 3.42 0 010 4.438 3.42 3.42 0 00-.806 1.946 3.42 3.42 0 01-3.138 3.138 3.42 3.42 0 00-1.946.806 3.42 3.42 0 01-4.438 0 3.42 3.42 0 00-1.946-.806 3.42 3.42 0 01-3.138-3.138 3.42 3.42 0 00-.806-1.946 3.42 3.42 0 010-4.438 3.42 3.42 0 00.806-1.946 3.42 3.42 0 013.138-3.138z" />
-                    </svg>
-                  </div>
-                </div>
+              <div className="relative h-52 bg-gray-900 overflow-hidden">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={certImagePath(cert.id, cert.certExt)}
+                  alt={cert.title}
+                  className="w-full h-full object-cover"
+                />
+                <div
+                  className="absolute inset-0"
+                  style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 50%, rgba(0,0,0,0.45) 100%)' }}
+                />
                 {/* Close button */}
                 <button
                   onClick={() => setSelectedCert(null)}
@@ -1395,15 +1366,23 @@ export default function Home() {
 
               {/* Content */}
               <div className="p-8">
-                {/* Issuer badge */}
-                <div className="flex items-center gap-2 mb-5">
-                  <span
-                    className="px-3 py-1 rounded-full text-xs font-semibold text-black"
-                    style={{ backgroundColor: '#f2b75f' }}
+                {/* Issuer row with logo circle */}
+                <div className="flex items-center gap-3 mb-5">
+                  <div
+                    className="w-10 h-10 rounded-full flex-shrink-0 flex items-center justify-center p-1.5 overflow-hidden"
+                    style={{ backgroundColor: isDarkMode ? '#2A2A2A' : '#F0EFE9', border: `1.5px solid ${isDarkMode ? '#333' : '#e5e7eb'}` }}
                   >
-                    {cert.date}
-                  </span>
-                  <span className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>{cert.issuer}</span>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={logoImagePath(cert.logoId)}
+                      alt={cert.issuer}
+                      className="w-full h-full object-contain"
+                    />
+                  </div>
+                  <div>
+                    <p className={`text-sm font-semibold leading-tight ${isDarkMode ? 'text-white' : 'text-black'}`}>{cert.issuer}</p>
+                    <p className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>{cert.date}</p>
+                  </div>
                 </div>
 
                 <h2 className={`text-2xl font-bold leading-snug mb-4 ${isDarkMode ? 'text-white' : 'text-black'}`}>
@@ -1416,32 +1395,22 @@ export default function Home() {
                   {cert.description}
                 </p>
 
-                {/* Skills */}
-                <p className={`text-xs font-semibold uppercase tracking-wider mb-3 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                  Skills covered
-                </p>
-                <div className="flex flex-wrap gap-2 mb-8">
-                  {cert.skills.map((skill) => (
-                    <span
-                      key={skill}
-                      className={`px-3 py-1.5 rounded-full text-xs font-medium ${isDarkMode ? 'bg-[#2A2A2A] text-gray-300' : 'bg-gray-100 text-gray-600'}`}
-                    >
-                      {skill}
-                    </span>
-                  ))}
-                </div>
-
                 {/* Actions */}
-                <div className="flex items-center gap-4">
-                  <button
-                    className="flex-1 py-3 rounded-full text-sm font-semibold text-black flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
-                    style={{ backgroundColor: '#f2b75f' }}
-                  >
-                    Verify Credential
-                    <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                  </button>
+                <div className="flex items-center gap-4 mt-2">
+                  {cert.url && (
+                    <a
+                      href={cert.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex-1 py-3 rounded-full text-sm font-semibold text-black flex items-center justify-center gap-2 hover:opacity-90 transition-opacity"
+                      style={{ backgroundColor: '#f2b75f' }}
+                    >
+                      Verify Credential
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                      </svg>
+                    </a>
+                  )}
                   <button
                     onClick={() => setSelectedCert(null)}
                     className={`py-3 px-6 rounded-full text-sm font-semibold transition-colors ${isDarkMode ? 'bg-[#2A2A2A] text-gray-300 hover:bg-[#333]' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'}`}
@@ -1593,7 +1562,7 @@ export default function Home() {
             className="text-lg leading-relaxed mb-10 max-w-2xl mx-auto"
             style={{ color: isDarkMode ? '#6b7280' : '#9ca3af' }}
           >
-            I&apos;m Badhon Biswas (BadhonAI)—a Dhaka-based frontend &amp; mobile developer and UI/UX designer. Let&apos;s create a fast, clean, SEO-friendly product with smooth interactions and modern UI.
+            I&apos;m Rishabh.k. Sharma—an AI &amp; full-stack engineer passionate about building intelligent, fast, and beautiful digital products. Let&apos;s create something impactful together.
           </p>
 
           {/* Buttons */}
@@ -1644,7 +1613,7 @@ export default function Home() {
         <div className="max-w-7xl mx-auto px-6 lg:px-12 py-16 grid grid-cols-1 md:grid-cols-3 gap-12">
           {/* Brand column */}
           <div className="space-y-4 max-w-xs">
-            <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>Badhon Biswas</h3>
+            <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>Rishabh.k. Sharma</h3>
             <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>UI/UX Designer &amp; Developer</p>
             <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
               Crafting beautiful, functional digital experiences that users love and businesses rely on.
@@ -1743,7 +1712,7 @@ export default function Home() {
           style={{ borderTop: `1px solid ${isDarkMode ? '#2a2a2a' : '#e5e7eb'}` }}
         >
           <p className={`text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-            © 2026 Badhon Biswas. All rights reserved.
+            © 2026 Rishabh.k. Sharma. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
             <button className={`text-sm transition-colors ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`}>
