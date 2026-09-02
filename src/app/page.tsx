@@ -1833,7 +1833,9 @@ export default function Home() {
 
           {/* Download CV */}
           <div className="flex items-center justify-center mb-10">
-            <button
+            <a
+              href="/Rishabh_Sharma_Resume_Python_AI_Engineer.pdf"
+              download="Rishabh-Sharma-Resume.pdf"
               className="w-full sm:w-auto px-8 py-4 rounded-full font-semibold flex items-center justify-center gap-2 transition-all duration-200 hover:opacity-80"
               style={{
                 backgroundColor: isDarkMode ? '#d4d0c8' : '#2a2a2a',
@@ -1844,7 +1846,7 @@ export default function Home() {
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
               </svg>
               Download CV
-            </button>
+            </a>
           </div>
 
           {/* Status strip */}
@@ -1857,7 +1859,7 @@ export default function Home() {
               Available for new projects
             </span>
             <span style={{ color: isDarkMode ? '#d1d5db' : '#374151' }}>|</span>
-            <span>Based in Dhaka, Bangladesh</span>
+            <span>Based in Indore, India</span>
             <span style={{ color: isDarkMode ? '#d1d5db' : '#374151' }}>|</span>
             <span>Response within 24h</span>
           </div>
@@ -1870,16 +1872,16 @@ export default function Home() {
           {/* Brand column */}
           <div className="space-y-4 max-w-xs">
             <h3 className={`text-xl font-bold ${isDarkMode ? 'text-white' : 'text-black'}`}>Rishabh.k. Sharma</h3>
-            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>UI/UX Designer &amp; Developer</p>
+            <p className={`text-sm ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>AI/ML Engineer &amp; Full-Stack Developer</p>
             <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-500' : 'text-gray-500'}`}>
-              Crafting beautiful, functional digital experiences that users love and businesses rely on.
+              Architecting enterprise-grade AI systems — from RAG and multi-agent orchestration to production-scale full-stack platforms.
             </p>
             <div className={`flex items-center gap-2 text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
               <svg className="w-4 h-4 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
               </svg>
-              Dhaka, Bangladesh
+              Indore, India
             </div>
           </div>
 
@@ -1918,6 +1920,7 @@ export default function Home() {
                 },
                 {
                   label: 'Linkedin',
+                  href: 'https://linkedin.com/in/rishabhssharma',
                   icon: (
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16 8a6 6 0 016 6v7h-4v-7a2 2 0 00-2-2 2 2 0 00-2 2v7h-4v-7a6 6 0 016-6zM2 9h4v12H2z" />
@@ -1951,14 +1954,26 @@ export default function Home() {
                     </svg>
                   ),
                 },
-              ].map(({ label, icon }) => (
+              ].map(({ label, icon, href }) => (
                 <li key={label}>
-                  <button
-                    className={`flex items-center gap-3 text-sm transition-colors duration-200 ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}
-                  >
-                    {icon}
-                    {label}
-                  </button>
+                  {href ? (
+                    <a
+                      href={href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={`flex items-center gap-3 text-sm transition-colors duration-200 ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}
+                    >
+                      {icon}
+                      {label}
+                    </a>
+                  ) : (
+                    <button
+                      className={`flex items-center gap-3 text-sm transition-colors duration-200 ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}
+                    >
+                      {icon}
+                      {label}
+                    </button>
+                  )}
                 </li>
               ))}
             </ul>
