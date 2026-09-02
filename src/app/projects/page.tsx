@@ -139,7 +139,10 @@ export default function ProjectsPage() {
                 </svg>
               )}
             </button>
-            <button className={`hidden sm:flex px-5 py-2 rounded-full font-medium transition-colors items-center gap-2 text-sm ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}>
+            <button
+              onClick={() => router.push('/#contact')}
+              className={`hidden sm:flex px-5 py-2 rounded-full font-medium transition-colors items-center gap-2 text-sm ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}
+            >
               Let&apos;s Talk
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -185,7 +188,10 @@ export default function ProjectsPage() {
                 {item.label}
               </button>
             ))}
-            <button className={`mt-1 px-4 py-3 rounded-2xl font-medium text-sm flex items-center justify-center gap-2 transition-colors ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}>
+            <button
+              onClick={() => { router.push('/#contact'); setMobileMenuOpen(false); }}
+              className={`mt-1 px-4 py-3 rounded-2xl font-medium text-sm flex items-center justify-center gap-2 transition-colors ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}
+            >
               Let&apos;s Talk
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />

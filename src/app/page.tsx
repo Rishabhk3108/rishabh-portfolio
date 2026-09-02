@@ -18,6 +18,9 @@ export default function Home() {
   const [activeNav, setActiveNav] = useState(0);
   const [pillStyle, setPillStyle] = useState({ left: 0, width: 0 });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [contactForm, setContactForm] = useState({ name: '', email: '', message: '', company: '' });
+  const [contactStatus, setContactStatus] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [contactError, setContactError] = useState('');
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const expSectionRef = useRef<HTMLDivElement>(null);
   const clipRectRef = useRef<SVGRectElement>(null);
@@ -69,13 +72,11 @@ export default function Home() {
         { id: 'about',          nav: 2 },
         { id: 'certifications', nav: 3 },
         { id: 'blog',           nav: 4 },
+        { id: 'contact',        nav: 5 },
       ]) {
         const el = document.getElementById(id);
         if (el && midpoint >= el.offsetTop) active = nav;
       }
-      // Contact: activate as soon as footer enters the bottom of the viewport
-      const footer = document.querySelector('footer') as HTMLElement | null;
-      if (footer && currentScrollY + viewportH >= footer.offsetTop + 60) active = 5;
       setActiveNav(active);
     };
     window.addEventListener('scroll', handleScroll, { passive: true });
@@ -142,6 +143,30 @@ export default function Home() {
 
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
+  };
+
+  const handleContactSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setContactStatus('submitting');
+    setContactError('');
+    try {
+      const res = await fetch('/api/contact', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(contactForm),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        setContactStatus('error');
+        setContactError(data.error || 'Something went wrong. Please try again.');
+        return;
+      }
+      setContactStatus('success');
+      setContactForm({ name: '', email: '', message: '', company: '' });
+    } catch {
+      setContactStatus('error');
+      setContactError('Something went wrong. Please check your connection and try again.');
+    }
   };
 
   const featuredCerts = certificates.filter(c =>
@@ -264,7 +289,7 @@ export default function Home() {
                 { label: 'About',          onClick: () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }) },
                 { label: 'Certifications', onClick: () => router.push('/certifications') },
                 { label: 'Blog',           onClick: () => router.push('/blog') },
-                { label: 'Contact',        onClick: () => document.querySelector('footer')?.scrollIntoView({ behavior: 'smooth' }) },
+                { label: 'Contact',        onClick: () => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }) },
               ].map((item, i) => (
                 <button
                   key={item.label}
@@ -300,7 +325,10 @@ export default function Home() {
             </button>
 
             {/* Let's Talk Button */}
-            <button className={`hidden sm:flex px-5 py-2 rounded-full font-medium transition-colors items-center gap-2 text-sm ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}>
+            <button
+              onClick={() => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' })}
+              className={`hidden sm:flex px-5 py-2 rounded-full font-medium transition-colors items-center gap-2 text-sm ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}
+            >
               Let's Talk
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -339,7 +367,7 @@ export default function Home() {
               { label: 'About',          onClick: () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }) },
               { label: 'Certifications', onClick: () => router.push('/certifications') },
               { label: 'Blog',           onClick: () => router.push('/blog') },
-              { label: 'Contact',        onClick: () => document.querySelector('footer')?.scrollIntoView({ behavior: 'smooth' }) },
+              { label: 'Contact',        onClick: () => document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }) },
             ].map((item, i) => (
               <button
                 key={item.label}
@@ -353,7 +381,10 @@ export default function Home() {
                 {item.label}
               </button>
             ))}
-            <button className={`mt-1 px-4 py-3 rounded-2xl font-medium text-sm flex items-center justify-center gap-2 transition-colors ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}>
+            <button
+              onClick={() => { document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' }); setMobileMenuOpen(false); }}
+              className={`mt-1 px-4 py-3 rounded-2xl font-medium text-sm flex items-center justify-center gap-2 transition-colors ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}
+            >
               Let's Talk
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
@@ -1689,10 +1720,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* CTA Section — intentionally inverted: dark in light mode, light in dark mode */}
+      {/* CTA / Contact Section — intentionally inverted: dark in light mode, light in dark mode */}
       <section
+        id="contact"
         style={{ backgroundColor: isDarkMode ? '#e9e7da' : '#141210' }}
-        className="px-6 py-20 sm:py-32 lg:px-12"
+        className="px-6 py-20 sm:py-32 lg:px-12 scroll-mt-24"
       >
         <div className="max-w-3xl mx-auto text-center">
           {/* Heading */}
@@ -1710,18 +1742,97 @@ export default function Home() {
             I&apos;m Rishabh.k. Sharma—an AI &amp; full-stack engineer passionate about building intelligent, fast, and beautiful digital products. Let&apos;s create something impactful together.
           </p>
 
-          {/* Buttons */}
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
-            <button
-              className="w-full sm:w-auto px-8 py-4 rounded-full font-semibold text-black flex items-center justify-center gap-2 hover:opacity-90 transition-all duration-200 hover:gap-3"
-              style={{ backgroundColor: '#f2b75f' }}
-            >
-              Start a conversation
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </button>
+          {/* Contact form */}
+          <form onSubmit={handleContactSubmit} className="max-w-xl mx-auto space-y-4 mb-6 text-left">
+            {/* Honeypot — hidden from real visitors, often filled in by bots */}
+            <input
+              type="text"
+              name="company"
+              value={contactForm.company}
+              onChange={e => setContactForm(f => ({ ...f, company: e.target.value }))}
+              tabIndex={-1}
+              autoComplete="off"
+              aria-hidden="true"
+              className="hidden"
+            />
 
+            <div className="grid sm:grid-cols-2 gap-4">
+              <input
+                type="text"
+                required
+                placeholder="Your name"
+                value={contactForm.name}
+                onChange={e => setContactForm(f => ({ ...f, name: e.target.value }))}
+                className={`w-full px-5 py-3.5 rounded-full outline-none text-sm transition-colors ${isDarkMode ? 'placeholder-gray-500' : 'placeholder-white/50'}`}
+                style={{
+                  backgroundColor: isDarkMode ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.08)',
+                  borderWidth: '1px',
+                  borderStyle: 'solid',
+                  borderColor: isDarkMode ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)',
+                  color: isDarkMode ? '#111827' : '#ffffff',
+                }}
+              />
+              <input
+                type="email"
+                required
+                placeholder="Your email"
+                value={contactForm.email}
+                onChange={e => setContactForm(f => ({ ...f, email: e.target.value }))}
+                className={`w-full px-5 py-3.5 rounded-full outline-none text-sm transition-colors ${isDarkMode ? 'placeholder-gray-500' : 'placeholder-white/50'}`}
+                style={{
+                  backgroundColor: isDarkMode ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.08)',
+                  borderWidth: '1px',
+                  borderStyle: 'solid',
+                  borderColor: isDarkMode ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)',
+                  color: isDarkMode ? '#111827' : '#ffffff',
+                }}
+              />
+            </div>
+
+            <textarea
+              required
+              rows={4}
+              placeholder="Tell me about your project..."
+              value={contactForm.message}
+              onChange={e => setContactForm(f => ({ ...f, message: e.target.value }))}
+              className={`w-full px-5 py-4 rounded-3xl outline-none text-sm resize-none transition-colors ${isDarkMode ? 'placeholder-gray-500' : 'placeholder-white/50'}`}
+              style={{
+                backgroundColor: isDarkMode ? 'rgba(0,0,0,0.05)' : 'rgba(255,255,255,0.08)',
+                borderWidth: '1px',
+                borderStyle: 'solid',
+                borderColor: isDarkMode ? 'rgba(0,0,0,0.15)' : 'rgba(255,255,255,0.2)',
+                color: isDarkMode ? '#111827' : '#ffffff',
+              }}
+            />
+
+            <div className="flex justify-center pt-2">
+              <button
+                type="submit"
+                disabled={contactStatus === 'submitting'}
+                className="w-full sm:w-auto px-8 py-4 rounded-full font-semibold text-black flex items-center justify-center gap-2 hover:opacity-90 transition-all duration-200 hover:gap-3 disabled:opacity-60 disabled:cursor-not-allowed"
+                style={{ backgroundColor: '#f2b75f' }}
+              >
+                {contactStatus === 'submitting' ? 'Sending…' : 'Send message'}
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </button>
+            </div>
+
+            {contactStatus === 'success' && (
+              <p className="text-sm text-center" style={{ color: '#4ade80' }}>
+                Thanks for reaching out — I&apos;ll get back to you within 24h.
+              </p>
+            )}
+            {contactStatus === 'error' && (
+              <p className="text-sm text-center" style={{ color: '#f87171' }}>
+                {contactError}
+              </p>
+            )}
+          </form>
+
+          {/* Download CV */}
+          <div className="flex items-center justify-center mb-10">
             <button
               className="w-full sm:w-auto px-8 py-4 rounded-full font-semibold flex items-center justify-center gap-2 transition-all duration-200 hover:opacity-80"
               style={{
@@ -1780,7 +1891,10 @@ export default function Home() {
                 <li key={item}>
                   <button
                     className={`text-sm transition-colors duration-200 hover:opacity-100 ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}
-                    onClick={() => item === 'Home' && window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    onClick={() => {
+                      if (item === 'Home') window.scrollTo({ top: 0, behavior: 'smooth' });
+                      if (item === 'Contact') document.getElementById('contact')?.scrollIntoView({ behavior: 'smooth' });
+                    }}
                   >
                     {item}
                   </button>
