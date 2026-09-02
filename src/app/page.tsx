@@ -527,19 +527,17 @@ export default function Home() {
           {/* Projects Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
             {featuredProjects.map((project, i) => {
-              const href = project.liveUrl || project.githubUrl;
-              const Wrapper = href ? 'a' : 'div';
               return (
               <div
                 key={project.id}
                 ref={(el) => { cardRefs.current[i] = el; }}
-                className={`group rounded-3xl overflow-hidden transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'} ${visibleCards.has(i) ? 'card-reveal' : 'opacity-0'}`}
+                onClick={() => router.push(`/projects/${project.slug}`)}
+                className={`group rounded-3xl overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'} ${visibleCards.has(i) ? 'card-reveal' : 'opacity-0'}`}
                 style={{ animationDelay: `${i * 180}ms` }}
               >
                 {/* Preview Image Area */}
-                <Wrapper
-                  {...(href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {})}
-                  className="relative h-56 block cursor-pointer"
+                <div
+                  className="relative h-56"
                   style={{ background: project.previewBg }}
                 >
                   {project.image && (
@@ -571,11 +569,11 @@ export default function Home() {
                   >
                     <div className="w-12 h-12 rounded-full bg-black/70 flex items-center justify-center">
                       <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
                       </svg>
                     </div>
                   </div>
-                </Wrapper>
+                </div>
 
                 {/* Card Content */}
                 <div className="p-6 space-y-3">

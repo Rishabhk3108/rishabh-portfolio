@@ -288,7 +288,8 @@ export default function ProjectsPage() {
               {filtered.map(project => (
                 <div
                   key={project.id}
-                  className={`group rounded-3xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'}`}
+                  onClick={() => router.push(`/projects/${project.slug}`)}
+                  className={`group rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'}`}
                 >
                   {/* ── Banner ── */}
                   <div className="relative h-40 overflow-hidden" style={{ background: project.previewBg }}>
@@ -354,6 +355,7 @@ export default function ProjectsPage() {
                           href={project.liveUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={e => e.stopPropagation()}
                           className="text-xs font-semibold flex items-center gap-1.5 hover:gap-2.5 transition-all duration-200"
                           style={{ color: '#f2b75f' }}
                         >
@@ -368,6 +370,7 @@ export default function ProjectsPage() {
                           href={project.githubUrl}
                           target="_blank"
                           rel="noopener noreferrer"
+                          onClick={e => e.stopPropagation()}
                           className={`text-xs font-medium flex items-center gap-1.5 hover:gap-2.5 transition-all duration-200 ${isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-700'}`}
                         >
                           View Code
@@ -377,8 +380,11 @@ export default function ProjectsPage() {
                         </a>
                       )}
                       {!project.liveUrl && !project.githubUrl && (
-                        <span className={`text-xs italic ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>
-                          Private / enterprise project
+                        <span className={`text-xs font-medium flex items-center gap-1.5 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+                          View case study
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                          </svg>
                         </span>
                       )}
                     </div>
