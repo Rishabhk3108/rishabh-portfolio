@@ -57,7 +57,7 @@ export default function CertificationsPage() {
 
   const navLinks = [
     { label: 'Home',           action: () => router.push('/') },
-    { label: 'Work',           action: () => router.push('/#projects') },
+    { label: 'Work',           action: () => router.push('/projects') },
     { label: 'About',          action: () => router.push('/#about') },
     { label: 'Certifications', action: () => {} },
     { label: 'Blog',           action: () => router.push('/blog') },
@@ -503,7 +503,7 @@ export default function CertificationsPage() {
             <ul className="space-y-4">
               {[
                 { label: 'Home',           href: '/' },
-                { label: 'Projects',       href: '/#projects' },
+                { label: 'Projects',       href: '/projects' },
                 { label: 'About',          href: '/#about' },
                 { label: 'Certifications', href: '/certifications' },
                 { label: 'Blog',           href: '/blog' },

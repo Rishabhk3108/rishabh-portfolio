@@ -2,96 +2,20 @@
 
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
+import { projects, projectFilterTags, tagCounts } from '@/lib/projects-data';
 
-const allPosts = [
-  {
-    category: 'Development',
-    readTime: '7 min read',
-    title: 'Building and Deploying Telegram Bots on AWS EC2 (ARM64)',
-    desc: 'From writing the bot logic to fixing ARM64 compatibility issues on Ubuntu — a practical walkthrough of what actually goes wrong and how to fix it.',
-    date: 'Apr 2025',
-    previewBg: 'linear-gradient(160deg, #0d1b2a 0%, #1a2f44 50%, #0a1520 100%)',
-  },
-  {
-    category: 'SEO',
-    readTime: '6 min read',
-    title: 'How I Ranked #1 on Google for My Own Name — Beating a 13-Year Veteran',
-    desc: "SEO isn't magic. It's meta tags, consistency, and patience. Here's exactly what I did to outrank someone with over a decade of head start.",
-    date: 'Mar 2025',
-    previewBg: 'linear-gradient(160deg, #2c1810 0%, #4a2c1a 50%, #1e1008 100%)',
-  },
-  {
-    category: 'Journey',
-    readTime: '5 min read',
-    title: 'How I Learned Web Design Using Only a Mobile Device',
-    desc: "No laptop, no desktop — just an Android phone, a browser, and an obsession with learning. Here's how I went from inspecting other sites to building my own.",
-    date: 'Jan 2025',
-    previewBg: 'linear-gradient(160deg, #1a2535 0%, #2a3d52 50%, #111c28 100%)',
-  },
-  {
-    category: 'Startup',
-    readTime: '8 min read',
-    title: "What I Learned from Failing My First Startup (Badhon Tech)",
-    desc: "Badhon Tech didn't survive. But the lessons from building it — servers, users, decisions, pressure — became the foundation for everything I do now.",
-    date: 'Dec 2024',
-    previewBg: 'linear-gradient(160deg, #1a0d00 0%, #3a1f00 50%, #110800 100%)',
-  },
-  {
-    category: 'Development',
-    readTime: '4 min read',
-    title: "When Your Device Can't Keep Up — Move to the Cloud",
-    desc: "My Android couldn't run React builds or local servers anymore. So I moved everything to the cloud. Here's how that changed my entire workflow.",
-    date: 'Jun 2024',
-    previewBg: 'linear-gradient(160deg, #0a1a0a 0%, #1a3a1a 50%, #050f05 100%)',
-  },
-  {
-    category: 'Journey',
-    readTime: '6 min read',
-    title: 'How I Mastered CSS by Refusing to Give Up',
-    desc: "I didn't read a course. I saw a design, I tried to copy it, I failed, I learned why, and I tried again. That loop is how CSS actually sticks.",
-    date: 'Aug 2023',
-    previewBg: 'linear-gradient(160deg, #1a1a2e 0%, #2a2a4e 50%, #0d0d1e 100%)',
-  },
-  {
-    category: 'SEO',
-    readTime: '5 min read',
-    title: 'Why Your Portfolio Website Is Invisible on Google (And How to Fix It)',
-    desc: "Most developer portfolios have zero SEO. No meta tags, no structure, no strategy. Here's a simple checklist I used to make mine discoverable.",
-    date: 'Nov 2024',
-    previewBg: 'linear-gradient(160deg, #0f1a0f 0%, #1e3a1e 50%, #080f08 100%)',
-  },
-  {
-    category: 'Startup',
-    readTime: '7 min read',
-    title: 'From Idea to Deployed: Building BadhonAI in 30 Days',
-    desc: "I gave myself one month to go from concept to a live product. No team, no funding — just focus, a clear scope, and a lot of late nights.",
-    date: 'Feb 2025',
-    previewBg: 'linear-gradient(160deg, #1a0d20 0%, #3a1a4a 50%, #100815 100%)',
-  },
-  {
-    category: 'Development',
-    readTime: '9 min read',
-    title: 'React Performance in 2025: What Still Matters and What Doesn\'t',
-    desc: "With React 19 and the compiler, some old performance tricks are obsolete. Here's what still counts — and where beginners waste the most effort.",
-    date: 'Mar 2025',
-    previewBg: 'linear-gradient(160deg, #1a1200 0%, #3d2b00 50%, #110c00 100%)',
-  },
-];
+const PROJECTS_NAV_IDX = 1;
 
-const categories = ['All', 'Development', 'SEO', 'Journey', 'Startup'];
-
-export default function BlogPage() {
+export default function ProjectsPage() {
   const router = useRouter();
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
   const [search, setSearch] = useState('');
-  const [activeCategory, setActiveCategory] = useState('All');
+  const [activeTag, setActiveTag] = useState('All');
   const lastScrollY = useRef(0);
   const navBtnRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [pillStyle, setPillStyle] = useState({ left: 0, width: 0 });
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  // Blog is always index 4 (Home=0, Work=1, About=2, Certifications=3, Blog=4, Contact=5)
-  const BLOG_NAV_IDX = 4;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -104,9 +28,8 @@ export default function BlogPage() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Measure pill position for the Blog button
   useEffect(() => {
-    const btn = navBtnRefs.current[BLOG_NAV_IDX];
+    const btn = navBtnRefs.current[PROJECTS_NAV_IDX];
     if (!btn) return;
     setPillStyle({ left: btn.offsetLeft, width: btn.offsetWidth });
   }, []);
@@ -120,20 +43,24 @@ export default function BlogPage() {
 
   const navLinks = [
     { label: 'Home',           action: () => router.push('/') },
-    { label: 'Work',           action: () => router.push('/projects') },
+    { label: 'Work',           action: () => {} },
     { label: 'About',          action: () => router.push('/#about') },
-    { label: 'Certifications', action: () => router.push('/#certifications') },
-    { label: 'Blog',           action: () => {} },
+    { label: 'Certifications', action: () => router.push('/certifications') },
+    { label: 'Blog',           action: () => router.push('/blog') },
     { label: 'Contact',        action: () => router.push('/#contact') },
   ];
 
-  const filtered = allPosts.filter(post => {
-    const matchCat = activeCategory === 'All' || post.category === activeCategory;
+  const filtered = projects.filter(project => {
+    const matchTag = activeTag === 'All' || project.tags.includes(activeTag);
+    const q = search.toLowerCase();
     const matchSearch =
-      search === '' ||
-      post.title.toLowerCase().includes(search.toLowerCase()) ||
-      post.desc.toLowerCase().includes(search.toLowerCase());
-    return matchCat && matchSearch;
+      q === '' ||
+      project.name.toLowerCase().includes(q) ||
+      project.description.toLowerCase().includes(q) ||
+      project.badges.some(b => b.toLowerCase().includes(q)) ||
+      project.tags.some(t => t.toLowerCase().includes(q)) ||
+      (project.organization?.toLowerCase().includes(q) ?? false);
+    return matchTag && matchSearch;
   });
 
   return (
@@ -148,7 +75,6 @@ export default function BlogPage() {
           className="flex items-center justify-between md:justify-center px-3 sm:px-6 py-2 rounded-full shadow-lg mx-auto max-w-6xl relative"
           style={{ backgroundColor: isDarkMode ? '#1E1E1E' : '#EEEDE9' }}
         >
-          {/* Logo */}
           <div className="flex items-center gap-2 sm:gap-3 md:absolute md:left-6">
             <button
               onClick={() => router.push('/')}
@@ -167,13 +93,11 @@ export default function BlogPage() {
             </button>
           </div>
 
-          {/* Nav links with sliding pill */}
           <div className="hidden md:flex items-center">
             <div
               className="relative flex items-center gap-1 px-2 py-1.5 rounded-full"
               style={{ backgroundColor: isDarkMode ? '#2A2A2A' : '#F5F4F0' }}
             >
-              {/* Sliding pill */}
               <div
                 className="absolute rounded-full pointer-events-none"
                 style={{
@@ -192,7 +116,7 @@ export default function BlogPage() {
                   ref={el => { navBtnRefs.current[i] = el; }}
                   onClick={item.action}
                   className="relative z-10 px-5 py-2 rounded-full text-sm font-medium cursor-pointer transition-colors duration-200"
-                  style={{ color: i === BLOG_NAV_IDX ? '#000000' : isDarkMode ? '#9ca3af' : '#6b7280' }}
+                  style={{ color: i === PROJECTS_NAV_IDX ? '#000000' : isDarkMode ? '#9ca3af' : '#6b7280' }}
                 >
                   {item.label}
                 </button>
@@ -200,7 +124,6 @@ export default function BlogPage() {
             </div>
           </div>
 
-          {/* Right side */}
           <div className="flex items-center gap-2 sm:gap-4 md:absolute md:right-6">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
@@ -255,8 +178,8 @@ export default function BlogPage() {
                 onClick={() => { item.action(); setMobileMenuOpen(false); }}
                 className="px-4 py-3 rounded-2xl text-sm font-medium text-left transition-colors duration-200"
                 style={{
-                  color: i === BLOG_NAV_IDX ? '#000000' : isDarkMode ? '#9ca3af' : '#6b7280',
-                  backgroundColor: i === BLOG_NAV_IDX ? '#f2b75f' : 'transparent',
+                  color: i === PROJECTS_NAV_IDX ? '#000000' : isDarkMode ? '#9ca3af' : '#6b7280',
+                  backgroundColor: i === PROJECTS_NAV_IDX ? '#f2b75f' : 'transparent',
                 }}
               >
                 {item.label}
@@ -287,45 +210,46 @@ export default function BlogPage() {
         </div>
       </div>
 
-      {/* ── Blog Header ── */}
+      {/* ── Header ── */}
       <section className="pt-12 pb-14 px-6 lg:px-12 text-center">
         <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
-          Blog
+          Projects
         </p>
         <h1 className={`text-3xl lg:text-4xl font-bold mb-4 leading-tight ${isDarkMode ? 'text-white' : 'text-black'}`}>
-          Articles on frontend, React, and UI/UX
+          Selected Work
         </h1>
         <p className={`text-sm max-w-2xl mx-auto leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-          Insights from Rishabh.k. Sharma on modern frontend development, React, UI/UX design, performance, and SEO-friendly web building.
+          {projects.length} projects spanning enterprise AI platforms, multi-agent systems, and full-stack applications built in production.
         </p>
       </section>
 
       {/* ── Search + Filters ── */}
       <section className="px-6 lg:px-12 pb-12">
         <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center gap-4">
-          {/* Search bar */}
           <div className={`flex-1 flex items-center gap-3 px-5 py-3.5 rounded-full shadow-sm ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'}`}>
             <svg className={`w-4 h-4 flex-shrink-0 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z" />
             </svg>
             <input
               type="text"
-              placeholder="Search articles..."
+              placeholder="Search projects, technologies, or clients..."
               value={search}
               onChange={e => setSearch(e.target.value)}
               className={`flex-1 bg-transparent outline-none text-sm ${isDarkMode ? 'text-white placeholder-gray-500' : 'text-gray-900 placeholder-gray-400'}`}
             />
+            {search && (
+              <button onClick={() => setSearch('')} className={`text-xs ${isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-600'}`}>✕</button>
+            )}
           </div>
 
-          {/* Category chips */}
-          <div className="flex items-center gap-2 flex-wrap">
-            {categories.map(cat => (
+          <div className="flex items-center gap-2 flex-wrap justify-center">
+            {projectFilterTags.map(tag => (
               <button
-                key={cat}
-                onClick={() => setActiveCategory(cat)}
-                className="px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200"
+                key={tag}
+                onClick={() => setActiveTag(tag)}
+                className="px-4 py-2 rounded-full text-sm font-medium transition-all duration-200 cursor-pointer"
                 style={
-                  activeCategory === cat
+                  activeTag === tag
                     ? { backgroundColor: '#f2b75f', color: '#000' }
                     : {
                         backgroundColor: isDarkMode ? '#1E1E1E' : '#fff',
@@ -334,82 +258,132 @@ export default function BlogPage() {
                       }
                 }
               >
-                {cat}
+                {tag}
+                {tag !== 'All' && (
+                  <span className="ml-1.5 text-xs opacity-60">{tagCounts[tag] ?? 0}</span>
+                )}
+                {tag === 'All' && (
+                  <span className="ml-1.5 text-xs opacity-60">{projects.length}</span>
+                )}
               </button>
             ))}
           </div>
         </div>
+        {filtered.length !== projects.length && (
+          <p className={`text-center text-xs mt-4 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
+            Showing {filtered.length} of {projects.length} projects
+          </p>
+        )}
       </section>
 
-      {/* ── Posts Grid ── */}
+      {/* ── Projects Grid ── */}
       <section className="px-6 lg:px-12 pb-24">
         <div className="max-w-7xl mx-auto">
           {filtered.length === 0 ? (
             <div className={`text-center py-24 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-              No articles match your search.
+              No projects match your search.
             </div>
           ) : (
             <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-7">
-              {filtered.map((post, i) => (
-                <article
-                  key={i}
-                  className={`group rounded-3xl overflow-hidden cursor-pointer transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'}`}
+              {filtered.map(project => (
+                <div
+                  key={project.id}
+                  className={`group rounded-3xl overflow-hidden transition-all duration-300 hover:scale-[1.02] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'}`}
                 >
-                  {/* Image */}
-                  <div className="relative overflow-hidden" style={{ height: '220px', background: post.previewBg }}>
-                    <div className="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity duration-300"
-                      style={{ background: 'rgba(0,0,0,0.25)' }}>
-                      <div className="w-12 h-12 rounded-full bg-black/60 flex items-center justify-center">
-                        <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                        </svg>
+                  {/* ── Banner ── */}
+                  <div className="relative h-40 overflow-hidden" style={{ background: project.previewBg }}>
+                    {project.image && (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={project.image} alt={project.name} className="w-full h-full object-cover" />
+                    )}
+                    <div
+                      className="absolute inset-0"
+                      style={{ background: 'linear-gradient(to bottom, rgba(0,0,0,0) 40%, rgba(0,0,0,0.4) 100%)' }}
+                    />
+                    {project.organization && (
+                      <div className="absolute top-4 left-4 z-10">
+                        <span className="px-3 py-1 rounded-full text-xs font-semibold text-black" style={{ backgroundColor: '#f2b75f' }}>
+                          {project.organization}
+                        </span>
                       </div>
-                    </div>
+                    )}
                   </div>
 
-                  {/* Content */}
+                  {/* ── Content ── */}
                   <div className="p-6 flex flex-col gap-3">
-                    {/* Meta row */}
-                    <div className="flex items-center gap-3">
-                      <span className="flex items-center gap-1 text-xs font-semibold" style={{ color: '#f2b75f' }}>
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />
-                        </svg>
-                        {post.category}
-                      </span>
-                      <span className={`flex items-center gap-1 text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        {post.readTime}
-                      </span>
-                    </div>
-
-                    {/* Title */}
-                    <h2 className={`text-base font-bold leading-snug transition-colors duration-200 group-hover:text-[#f2b75f] ${isDarkMode ? 'text-white' : 'text-black'}`}>
-                      {post.title}
+                    <h2 className={`text-sm font-bold leading-snug transition-colors duration-200 group-hover:text-[#f2b75f] ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                      {project.name}
                     </h2>
 
+                    {project.badges.length > 0 && (
+                      <div className="flex flex-wrap gap-1.5">
+                        {project.badges.map(badge => (
+                          <span
+                            key={badge}
+                            className={`px-2.5 py-1 text-xs rounded-full whitespace-nowrap font-medium ${isDarkMode ? 'border border-gray-400 text-white' : 'bg-black text-white'}`}
+                          >
+                            {badge}
+                          </span>
+                        ))}
+                      </div>
+                    )}
+
+                    {/* Divider */}
+                    <div className={`h-px ${isDarkMode ? 'bg-[#2A2A2A]' : 'bg-gray-100'}`} />
+
                     {/* Description */}
-                    <p className={`text-sm leading-relaxed ${isDarkMode ? 'text-gray-400' : 'text-gray-500'}`}>
-                      {post.desc}
+                    <p className={`text-xs leading-relaxed line-clamp-4 ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                      {project.description}
                     </p>
 
-                    {/* Footer row */}
-                    <div className="flex items-center justify-between pt-2 mt-auto">
-                      <span className={`text-xs ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>{post.date}</span>
-                      <button
-                        className="text-xs font-semibold flex items-center gap-1 transition-all duration-200 hover:gap-2"
-                        style={{ color: '#f2b75f' }}
-                      >
-                        Read more
-                        <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                        </svg>
-                      </button>
+                    <div className="flex flex-wrap gap-2">
+                      {project.tags.map(tag => (
+                        <span
+                          key={tag}
+                          className={`px-3 py-1 rounded-full text-xs transition-colors ${isDarkMode ? 'bg-[#2A2A2A] text-gray-300' : 'bg-gray-100 text-gray-600'}`}
+                        >
+                          {tag}
+                        </span>
+                      ))}
+                    </div>
+
+                    {/* Actions */}
+                    <div className="flex items-center gap-4 mt-1 flex-wrap">
+                      {project.liveUrl && (
+                        <a
+                          href={project.liveUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="text-xs font-semibold flex items-center gap-1.5 hover:gap-2.5 transition-all duration-200"
+                          style={{ color: '#f2b75f' }}
+                        >
+                          Live Demo
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      )}
+                      {project.githubUrl && (
+                        <a
+                          href={project.githubUrl}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className={`text-xs font-medium flex items-center gap-1.5 hover:gap-2.5 transition-all duration-200 ${isDarkMode ? 'text-gray-500 hover:text-gray-300' : 'text-gray-400 hover:text-gray-700'}`}
+                        >
+                          View Code
+                          <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                          </svg>
+                        </a>
+                      )}
+                      {!project.liveUrl && !project.githubUrl && (
+                        <span className={`text-xs italic ${isDarkMode ? 'text-gray-600' : 'text-gray-400'}`}>
+                          Private / enterprise project
+                        </span>
+                      )}
                     </div>
                   </div>
-                </article>
+                </div>
               ))}
             </div>
           )}
@@ -438,16 +412,17 @@ export default function BlogPage() {
             <h4 className={`text-base font-bold mb-6 ${isDarkMode ? 'text-white' : 'text-black'}`}>Navigation</h4>
             <ul className="space-y-4">
               {[
-                { label: 'Home',    href: '/' },
-                { label: 'Projects', href: '/projects' },
-                { label: 'About',  href: '/#about' },
-                { label: 'Blog',   href: '/blog' },
-                { label: 'Contact', href: '/#contact' },
+                { label: 'Home',           href: '/' },
+                { label: 'Projects',       href: '/projects' },
+                { label: 'About',          href: '/#about' },
+                { label: 'Certifications', href: '/certifications' },
+                { label: 'Blog',           href: '/blog' },
+                { label: 'Contact',        href: '/#contact' },
               ].map(item => (
                 <li key={item.label}>
                   <button
                     onClick={() => router.push(item.href)}
-                    className={`text-sm transition-colors duration-200 ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}
+                    className={`text-sm transition-colors duration-200 cursor-pointer ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}
                   >
                     {item.label}
                   </button>
@@ -467,7 +442,7 @@ export default function BlogPage() {
                 { label: 'Email',     icon: <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /> },
               ].map(({ label, icon }) => (
                 <li key={label}>
-                  <button className={`flex items-center gap-3 text-sm transition-colors duration-200 ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}>
+                  <button className={`flex items-center gap-3 text-sm transition-colors duration-200 cursor-pointer ${isDarkMode ? 'text-gray-400 hover:text-white' : 'text-gray-400 hover:text-black'}`}>
                     <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">{icon}</svg>
                     {label}
                   </button>
@@ -485,11 +460,11 @@ export default function BlogPage() {
             © 2026 Rishabh.k. Sharma. All rights reserved.
           </p>
           <div className="flex items-center gap-6">
-            <button className={`text-sm transition-colors ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`}>Privacy Policy</button>
-            <button className={`text-sm transition-colors ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`}>Terms of Service</button>
+            <button className={`text-sm transition-colors cursor-pointer ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`}>Privacy Policy</button>
+            <button className={`text-sm transition-colors cursor-pointer ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`}>Terms of Service</button>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 flex-shrink-0 ${isDarkMode ? 'bg-[#2a2a2a] text-white hover:bg-[#3a3a3a]' : 'bg-gray-100 text-black hover:bg-gray-200'}`}
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 cursor-pointer flex-shrink-0 ${isDarkMode ? 'bg-[#2a2a2a] text-white hover:bg-[#3a3a3a]' : 'bg-gray-100 text-black hover:bg-gray-200'}`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />

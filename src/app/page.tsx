@@ -3,6 +3,7 @@
 import { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { certificates, certImagePath, logoImagePath } from '@/lib/certificates-data';
+import { featuredProjects } from '@/lib/projects-data';
 
 export default function Home() {
   const router = useRouter();
@@ -259,7 +260,7 @@ export default function Home() {
               />
               {[
                 { label: 'Home',           onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
-                { label: 'Work',           onClick: () => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) },
+                { label: 'Work',           onClick: () => router.push('/projects') },
                 { label: 'About',          onClick: () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }) },
                 { label: 'Certifications', onClick: () => router.push('/certifications') },
                 { label: 'Blog',           onClick: () => router.push('/blog') },
@@ -334,7 +335,7 @@ export default function Home() {
           >
             {[
               { label: 'Home',           onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
-              { label: 'Work',           onClick: () => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) },
+              { label: 'Work',           onClick: () => router.push('/projects') },
               { label: 'About',          onClick: () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }) },
               { label: 'Certifications', onClick: () => router.push('/certifications') },
               { label: 'Blog',           onClick: () => router.push('/blog') },
@@ -499,51 +500,52 @@ export default function Home() {
       <section id="projects" className="px-6 py-16 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#F4F3EE' }}>
         <div className="max-w-7xl mx-auto">
           {/* Section Header */}
-          <div className="text-center mb-16">
-            <p className={`text-sm font-medium mb-4 transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              FEATURED PROJECTS
-            </p>
-            <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
-              Selected work by Rishabh.k. Sharma
-            </h2>
-            <p className={`text-lg max-w-3xl mx-auto leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
-              A curated selection of web and mobile projects combining UI/UX design, React development, smooth interactions, and modern, responsive performance-focused interfaces.
-            </p>
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-16">
+            <div className="max-w-3xl text-center sm:text-left mx-auto sm:mx-0">
+              <p className={`text-sm font-medium mb-4 transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                FEATURED PROJECTS
+              </p>
+              <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
+                Selected work by Rishabh.k. Sharma
+              </h2>
+              <p className={`text-lg leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                A curated selection of enterprise AI, full-stack, and automation projects — from multi-agent systems to large-scale cloud platforms.
+              </p>
+            </div>
+            <button
+              onClick={() => router.push('/projects')}
+              className="sm:mt-2 px-8 py-4 text-black rounded-full font-medium text-sm flex items-center justify-center gap-2 hover:gap-3 hover:opacity-90 transition-all duration-200 flex-shrink-0 cursor-pointer self-center sm:self-start"
+              style={{ backgroundColor: '#f2b75f' }}
+            >
+              View all
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </button>
           </div>
 
           {/* Projects Grid */}
           <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {[
-              {
-                name: 'Developer Portfolio',
-                badge: 'Next.js',
-                description: 'Personal developer portfolio showcasing web development skills, projects, and services. Buil...',
-                tags: ['Portfolio', 'Developer', 'React'],
-                previewBg: 'linear-gradient(160deg, #111827 0%, #1e293b 60%, #0f172a 100%)',
-              },
-              {
-                name: 'iPhone UI Portfolio',
-                badge: 'HTML/CSS/JS',
-                description: 'A creative portfolio presented as an iOS-style phone interface, complete with simulated...',
-                tags: ['Creative', 'Portfolio', 'iOS UI'],
-                previewBg: 'linear-gradient(160deg, #1c1c2e 0%, #2c2c3e 50%, #1a1a2e 100%)',
-              },
-              {
-                name: 'PulseNow',
-                badge: 'React',
-                description: 'Live cryptocurrency dashboard showing real-time prices, trending coins, and the Fear &...',
-                tags: ['Crypto', 'Dashboard', 'Real-time'],
-                previewBg: 'linear-gradient(160deg, #0a0f1a 0%, #0d1b2a 60%, #071020 100%)',
-              },
-            ].map((project, i) => (
+            {featuredProjects.map((project, i) => {
+              const href = project.liveUrl || project.githubUrl;
+              const Wrapper = href ? 'a' : 'div';
+              return (
               <div
-                key={i}
+                key={project.id}
                 ref={(el) => { cardRefs.current[i] = el; }}
-                className={`group rounded-3xl overflow-hidden cursor-pointer transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'} ${visibleCards.has(i) ? 'card-reveal' : 'opacity-0'}`}
+                className={`group rounded-3xl overflow-hidden transition-transform duration-300 hover:scale-[1.03] hover:shadow-xl ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'} ${visibleCards.has(i) ? 'card-reveal' : 'opacity-0'}`}
                 style={{ animationDelay: `${i * 180}ms` }}
               >
                 {/* Preview Image Area */}
-                <div className="relative h-56" style={{ background: project.previewBg }}>
+                <Wrapper
+                  {...(href ? { href, target: '_blank', rel: 'noopener noreferrer' } : {})}
+                  className="relative h-56 block cursor-pointer"
+                  style={{ background: project.previewBg }}
+                >
+                  {project.image && (
+                    // eslint-disable-next-line @next/next/no-img-element
+                    <img src={project.image} alt={project.name} className="absolute inset-0 w-full h-full object-cover" />
+                  )}
                   {/* Bookmark button */}
                   <button
                     className={`absolute top-4 right-4 z-10 w-9 h-9 rounded-full flex items-center justify-center transition-colors ${isDarkMode ? 'bg-gray-600/60 hover:bg-gray-500/80' : 'bg-white/80 hover:bg-white'}`}
@@ -573,22 +575,33 @@ export default function Home() {
                       </svg>
                     </div>
                   </div>
-                </div>
+                </Wrapper>
 
                 {/* Card Content */}
                 <div className="p-6 space-y-3">
-                  <div className="flex items-start justify-between gap-3">
+                  <div>
                     <h3
-                      className={`text-lg font-bold transition-colors duration-300 group-hover:text-[#f2b75f] ${isDarkMode ? 'text-white' : 'text-black'}`}
+                      className={`text-lg font-bold leading-snug transition-colors duration-300 group-hover:text-[#f2b75f] ${isDarkMode ? 'text-white' : 'text-black'}`}
                     >
                       {project.name}
                     </h3>
-                    <span
-                      className={`px-3 py-1 text-xs rounded-full whitespace-nowrap font-medium flex-shrink-0 ${isDarkMode ? 'border border-gray-400 text-white' : 'bg-black text-white'}`}
-                    >
-                      {project.badge}
-                    </span>
+                    {project.organization && (
+                      <p className={`text-xs mt-1 ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>{project.organization}</p>
+                    )}
                   </div>
+
+                  {project.badges.length > 0 && (
+                    <div className="flex flex-wrap gap-1.5">
+                      {project.badges.map((badge) => (
+                        <span
+                          key={badge}
+                          className={`px-2.5 py-1 text-xs rounded-full whitespace-nowrap font-medium ${isDarkMode ? 'border border-gray-400 text-white' : 'bg-black text-white'}`}
+                        >
+                          {badge}
+                        </span>
+                      ))}
+                    </div>
+                  )}
 
                   <p className={`text-sm leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                     {project.description}
@@ -606,7 +619,8 @@ export default function Home() {
                   </div>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </section>
