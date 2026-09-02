@@ -15,6 +15,39 @@ function CheckBullet() {
   );
 }
 
+function NumberedGrid({
+  items,
+  cardBg,
+  headingText,
+  mutedText,
+  className = '',
+}: {
+  items: { label: string; description: string }[];
+  cardBg: string;
+  headingText: string;
+  mutedText: string;
+  className?: string;
+}) {
+  return (
+    <div className={`grid sm:grid-cols-2 gap-5 ${className}`}>
+      {items.map((item, i) => (
+        <div key={item.label} className={`rounded-2xl p-6 ${cardBg}`}>
+          <div className="flex items-center gap-3 mb-3">
+            <div
+              className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+              style={{ backgroundColor: '#f2b75f' }}
+            >
+              <span className="text-black font-bold text-xs select-none">{i + 1}</span>
+            </div>
+            <h4 className={`font-bold text-sm ${headingText}`}>{item.label}</h4>
+          </div>
+          <p className={`text-sm leading-relaxed ${mutedText}`}>{item.description}</p>
+        </div>
+      ))}
+    </div>
+  );
+}
+
 export default function ProjectDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = use(params);
   const router = useRouter();
@@ -240,9 +273,16 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
           {/* ── Hero ── */}
           <section className="px-6 lg:px-12 pt-8 pb-4">
             <div className="max-w-5xl mx-auto">
-              <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
-                {project.organization ? `Case Study · ${project.organization}` : 'Case Study'}
-              </p>
+              <div className="flex items-center gap-3 flex-wrap mb-4">
+                <p className="text-sm font-semibold tracking-widest uppercase" style={{ color: '#f2b75f' }}>
+                  {project.organization ? `Case Study · ${project.organization}` : 'Case Study'}
+                </p>
+                {detail?.period && (
+                  <span className={`px-2.5 py-1 rounded-full text-xs font-medium ${isDarkMode ? 'bg-[#2A2A2A] text-gray-400' : 'bg-gray-100 text-gray-500'}`}>
+                    {detail.period}
+                  </span>
+                )}
+              </div>
               <h1 className={`text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight mb-6 ${headingText}`}>
                 {project.name}
               </h1>
@@ -359,45 +399,128 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                   <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
                     Project Overview
                   </p>
-                  <p className={`text-lg leading-relaxed mb-10 ${mutedText}`}>
+                  <p className={`text-lg leading-relaxed ${detail.overviewPoints?.length || detail.overviewClosing?.length || detail.capabilityGroups.length > 0 ? 'mb-8' : ''} ${mutedText}`}>
                     {detail.overviewIntro}
                   </p>
 
-                  <div className="grid md:grid-cols-2 gap-6">
-                    {detail.capabilityGroups.map(group => (
-                      <div key={group.title} className={`rounded-3xl p-7 ${cardBg}`}>
-                        <h3 className={`text-lg font-bold mb-4 ${headingText}`}>{group.title}</h3>
-                        <ul className="space-y-3">
-                          {group.items.map(item => (
-                            <li key={item} className="flex items-start gap-2">
-                              <CheckBullet />
-                              <span className={`text-sm leading-relaxed ${mutedText}`}>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    ))}
-                  </div>
-                </div>
-              </section>
-
-              {/* ── System Architecture ── */}
-              {detail.architecture.length > 0 && (
-                <section className="px-6 lg:px-12 py-10">
-                  <div className="max-w-5xl mx-auto">
-                    <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
-                      System Architecture
-                    </p>
-                    <h2 className={`text-2xl sm:text-3xl font-bold mb-8 ${headingText}`}>Under the hood</h2>
-                    <div className="grid sm:grid-cols-2 gap-5">
-                      {detail.architecture.map((item, i) => (
-                        <div key={item.label} className={`rounded-2xl p-6 ${cardBg}`}>
+                  {detail.overviewPoints && detail.overviewPoints.length > 0 && (
+                    <div className={`grid sm:grid-cols-2 gap-5 ${detail.overviewClosing?.length || detail.capabilityGroups.length > 0 ? 'mb-8' : ''}`}>
+                      {detail.overviewPoints.map((point, i) => (
+                        <div key={point.label} className={`rounded-2xl p-6 ${cardBg}`}>
                           <div className="flex items-center gap-3 mb-3">
                             <div
                               className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
                               style={{ backgroundColor: '#f2b75f' }}
                             >
                               <span className="text-black font-bold text-xs select-none">{i + 1}</span>
+                            </div>
+                            <h4 className={`font-bold text-sm ${headingText}`}>{point.label}</h4>
+                          </div>
+                          <p className={`text-sm leading-relaxed ${mutedText}`}>{point.description}</p>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {detail.overviewClosing && detail.overviewClosing.length > 0 && (
+                    <div className={`space-y-4 ${detail.capabilityGroups.length > 0 ? 'mb-8' : ''}`}>
+                      {detail.overviewClosing.map((para, i) => (
+                        <p key={i} className={`text-base leading-relaxed ${mutedText}`}>{para}</p>
+                      ))}
+                    </div>
+                  )}
+
+                  {detail.capabilityGroups.length > 0 && (
+                    <div className="grid md:grid-cols-2 gap-6">
+                      {detail.capabilityGroups.map(group => (
+                        <div key={group.title} className={`rounded-3xl p-7 ${cardBg}`}>
+                          <h3 className={`text-lg font-bold mb-4 ${headingText}`}>{group.title}</h3>
+                          <ul className="space-y-3">
+                            {group.items.map(item => (
+                              <li key={item} className="flex items-start gap-2">
+                                <CheckBullet />
+                                <span className={`text-sm leading-relaxed ${mutedText}`}>{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
+                      ))}
+                    </div>
+                  )}
+                </div>
+              </section>
+
+              {/* ── What the System Does (optional secondary grid) ── */}
+              {detail.functionsSection && detail.functionsSection.items.length > 0 && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
+                      {detail.functionsSection.title ?? 'What It Does'}
+                    </p>
+                    <h2 className={`text-2xl sm:text-3xl font-bold mb-8 ${headingText}`}>{detail.functionsSection.heading ?? 'Key capabilities'}</h2>
+                    <NumberedGrid
+                      items={detail.functionsSection.items}
+                      cardBg={cardBg}
+                      headingText={headingText}
+                      mutedText={mutedText}
+                      className={detail.functionsSection.closing?.length ? 'mb-8' : ''}
+                    />
+                    {detail.functionsSection.closing && detail.functionsSection.closing.length > 0 && (
+                      <div className="space-y-4">
+                        {detail.functionsSection.closing.map((para, i) => (
+                          <p key={i} className={`text-base leading-relaxed ${mutedText}`}>{para}</p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </section>
+              )}
+
+              {/* ── System Architecture ── */}
+              {detail.architecture.length > 0 && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
+                      {detail.architectureTitle ?? 'System Architecture'}
+                    </p>
+                    <h2 className={`text-2xl sm:text-3xl font-bold mb-8 ${headingText}`}>{detail.architectureHeading ?? 'Under the hood'}</h2>
+                    <NumberedGrid
+                      items={detail.architecture}
+                      cardBg={cardBg}
+                      headingText={headingText}
+                      mutedText={mutedText}
+                      className={detail.architectureClosing?.length ? 'mb-8' : ''}
+                    />
+                    {detail.architectureClosing && detail.architectureClosing.length > 0 && (
+                      <div className="space-y-4">
+                        {detail.architectureClosing.map((para, i) => (
+                          <p key={i} className={`text-base leading-relaxed ${mutedText}`}>{para}</p>
+                        ))}
+                      </div>
+                    )}
+                  </div>
+                </section>
+              )}
+
+              {/* ── Technical Highlights ── */}
+              {detail.highlights && detail.highlights.length > 0 && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
+                      Technical Highlights
+                    </p>
+                    <h2 className={`text-2xl sm:text-3xl font-bold mb-8 ${headingText}`}>What stood out</h2>
+                    <div className="grid sm:grid-cols-2 gap-5">
+                      {detail.highlights.map(item => (
+                        <div key={item.label} className={`rounded-2xl p-6 ${cardBg}`}>
+                          <div className="flex items-center gap-3 mb-3">
+                            <div
+                              className="w-8 h-8 rounded-full flex items-center justify-center flex-shrink-0"
+                              style={{ backgroundColor: isDarkMode ? '#2A1F0F' : '#FEF3E2' }}
+                            >
+                              <svg className="w-4 h-4" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                              </svg>
                             </div>
                             <h4 className={`font-bold text-sm ${headingText}`}>{item.label}</h4>
                           </div>
@@ -443,8 +566,12 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                       </div>
                     </div>
 
-                    {detail.roleClosing && (
-                      <p className={`text-base leading-relaxed mt-8 ${mutedText}`}>{detail.roleClosing}</p>
+                    {detail.roleClosing && detail.roleClosing.length > 0 && (
+                      <div className="space-y-4 mt-8">
+                        {detail.roleClosing.map((para, i) => (
+                          <p key={i} className={`text-base leading-relaxed ${mutedText}`}>{para}</p>
+                        ))}
+                      </div>
                     )}
                   </div>
                 </section>
@@ -466,9 +593,20 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                       </svg>
                     </div>
                     <h3 className={`text-xl font-bold mb-3 ${headingText}`}>Outcome</h3>
-                    <p className={`text-base leading-relaxed ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                    <p className={`text-base leading-relaxed ${detail.outcomeStats && detail.outcomeStats.length > 0 ? 'mb-8' : ''} ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
                       {detail.outcome}
                     </p>
+
+                    {detail.outcomeStats && detail.outcomeStats.length > 0 && (
+                      <div className="flex flex-wrap gap-8">
+                        {detail.outcomeStats.map(stat => (
+                          <div key={stat.label} className="max-w-[16rem]">
+                            <div className={`text-3xl sm:text-4xl font-bold ${headingText}`}>{stat.value}</div>
+                            <div className={`text-sm mt-1 leading-snug ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{stat.label}</div>
+                          </div>
+                        ))}
+                      </div>
+                    )}
                   </div>
 
                   {detail.note && (
