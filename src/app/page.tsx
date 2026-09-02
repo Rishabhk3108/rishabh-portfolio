@@ -16,6 +16,7 @@ export default function Home() {
   const [selectedCert, setSelectedCert] = useState<number | null>(null);
   const [activeNav, setActiveNav] = useState(0);
   const [pillStyle, setPillStyle] = useState({ left: 0, width: 0 });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const cardRefs = useRef<(HTMLDivElement | null)[]>([]);
   const expSectionRef = useRef<HTMLDivElement>(null);
   const clipRectRef = useRef<SVGRectElement>(null);
@@ -131,6 +132,13 @@ export default function Home() {
     return () => window.removeEventListener('keydown', onKey);
   }, []);
 
+  // Close the mobile menu on resize back to desktop
+  useEffect(() => {
+    const onResize = () => { if (window.innerWidth >= 768) setMobileMenuOpen(false); };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
   };
@@ -139,32 +147,89 @@ export default function Home() {
     [10, 11, 2, 43, 72, 51, 52, 6, 7, 50].includes(c.id) && c.hasCert
   );
 
+  const experienceNodes = [
+    {
+      label: 'High School',
+      company: 'Shree Vaishnav Academy',
+      period: 'Before 2019',
+      bullets: ['Foundation in science & academics'],
+      left: '13%',
+      top: '39%',
+      popupUp: false,
+    },
+    {
+      label: 'B.Sc. Biotechnology, Life Sciences & Chemistry',
+      company: 'Maharaja Ranjeet Singh College',
+      period: '2019 – 2022',
+      bullets: ['Built analytical and research thinking', 'Transitioned interest toward technology and data'],
+      left: '27%',
+      top: '35%',
+      popupUp: false,
+    },
+    {
+      label: 'Student Intern',
+      company: 'InfoBeans Foundation',
+      period: '2022 – 2024',
+      bullets: ['Learned Full Stack Development', 'Java & MERN stack (MongoDB, Express, React, Node.js)', 'Built real-world projects under mentorship'],
+      left: '41%',
+      top: '55%',
+      popupUp: true,
+    },
+    {
+      label: 'AI ML Intern',
+      company: 'InfoBeans Technologies',
+      period: 'Feb 2024 – Jun 2024',
+      bullets: ['Built ML/DL models for NLP, computer vision & predictive analytics', 'Developed LLM-based & GenAI prototypes', 'Deployed models on Azure / AWS'],
+      left: '54%',
+      top: '52%',
+      popupUp: true,
+    },
+    {
+      label: 'AI ML Engineer',
+      company: 'InfoBeans Technologies',
+      period: '2024 – Present',
+      bullets: ['Built cognitive search system processing 1M+ documents (RAG + GraphRAG)', 'Delivered agentic AI systems using LangGraph, CrewAI & Azure AI Foundry', 'Trained YOLO & video models for real-time inference', 'Led in-house AI initiatives as project lead'],
+      left: '68%',
+      top: '35%',
+      popupUp: false,
+    },
+    {
+      label: 'AI Trainer & Speaker',
+      company: 'Others / Community',
+      period: 'Ongoing',
+      bullets: ['President, InfoBeans Foundation Alumni Council (~400 students)', 'AI/ML Trainer at InfoBeans Foundation', 'Guest lecturer at MU20 University & Sage University', 'AI Blog writer at InfoBeans Technologies'],
+      left: '82%',
+      top: '36%',
+      popupUp: false,
+    },
+  ];
+
   return (
-    <div 
-      className="min-h-screen transition-colors duration-300" 
+    <div
+      className="min-h-screen overflow-x-hidden transition-colors duration-300"
       style={{ backgroundColor: isDarkMode ? '#181716' : '#e9e7da' }}
     >
       {/* Navigation */}
       <div
-        className={`px-6 py-3 lg:px-12 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${navHidden ? '-translate-y-full' : 'translate-y-0'}`}
+        className={`px-4 py-3 sm:px-6 lg:px-12 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ease-in-out ${navHidden ? '-translate-y-full' : 'translate-y-0'}`}
         style={{ backgroundColor: isDarkMode ? '#181716' : '#e9e7da' }}
       >
-        <nav 
-          className="flex items-center justify-center px-6 py-2 rounded-full shadow-lg transition-colors mx-auto max-w-6xl relative"
+        <nav
+          className="flex items-center justify-between md:justify-center px-3 sm:px-6 py-2 rounded-full shadow-lg transition-colors mx-auto max-w-6xl relative"
           style={{ backgroundColor: isDarkMode ? '#1E1E1E' : '#EEEDE9' }}
         >
           {/* Logo */}
-          <div className="flex items-center gap-3 absolute left-6">
+          <div className="flex items-center gap-2 sm:gap-3 md:absolute md:left-6">
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-transparent hover:ring-[#f2b75f] transition-all duration-300"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-transparent hover:ring-[#f2b75f] transition-all duration-300"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/profile.png" alt="Rishabh.k. Sharma" className="w-full h-full object-cover" />
             </button>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`font-semibold text-lg transition-all duration-300 hover:scale-105 ${isDarkMode ? 'text-white' : 'text-black'}`}
+              className={`hidden sm:inline font-semibold text-lg transition-all duration-300 hover:scale-105 ${isDarkMode ? 'text-white' : 'text-black'}`}
               onMouseEnter={(e) => (e.target as HTMLElement).style.color = '#f2b75f'}
               onMouseLeave={(e) => (e.target as HTMLElement).style.color = ''}
             >
@@ -172,7 +237,7 @@ export default function Home() {
             </button>
           </div>
 
-          {/* Navigation Links - Centered */}
+          {/* Navigation Links - Centered (desktop) */}
           <div className="hidden md:flex items-center gap-6">
             {/* Inner oval for navigation buttons */}
             <div
@@ -214,9 +279,9 @@ export default function Home() {
           </div>
 
           {/* Right side buttons */}
-          <div className="flex items-center gap-4 absolute right-6">
+          <div className="flex items-center gap-2 sm:gap-4 md:absolute md:right-6">
             {/* Theme Toggle */}
-            <button 
+            <button
               onClick={toggleDarkMode}
               className={`p-2 rounded-full transition-colors ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-100'}`}
             >
@@ -234,22 +299,75 @@ export default function Home() {
             </button>
 
             {/* Let's Talk Button */}
-            <button className={`px-5 py-2 rounded-full font-medium transition-colors flex items-center gap-2 text-sm ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}>
+            <button className={`hidden sm:flex px-5 py-2 rounded-full font-medium transition-colors items-center gap-2 text-sm ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}>
+              Let's Talk
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </button>
+
+            {/* Hamburger toggle (mobile only) */}
+            <button
+              onClick={() => setMobileMenuOpen(o => !o)}
+              aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
+              className={`md:hidden p-2 rounded-full transition-colors ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-100'}`}
+            >
+              <svg className={`w-4 h-4 ${isDarkMode ? 'text-white' : 'text-black'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile menu panel */}
+        <div
+          className={`md:hidden mx-auto max-w-6xl overflow-hidden transition-all duration-300 ease-in-out ${mobileMenuOpen ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0 mt-0'}`}
+        >
+          <div
+            className="flex flex-col gap-1 p-3 rounded-3xl shadow-lg"
+            style={{ backgroundColor: isDarkMode ? '#1E1E1E' : '#EEEDE9' }}
+          >
+            {[
+              { label: 'Home',           onClick: () => window.scrollTo({ top: 0, behavior: 'smooth' }) },
+              { label: 'Work',           onClick: () => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' }) },
+              { label: 'About',          onClick: () => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' }) },
+              { label: 'Certifications', onClick: () => router.push('/certifications') },
+              { label: 'Blog',           onClick: () => router.push('/blog') },
+              { label: 'Contact',        onClick: () => document.querySelector('footer')?.scrollIntoView({ behavior: 'smooth' }) },
+            ].map((item, i) => (
+              <button
+                key={item.label}
+                onClick={() => { item.onClick(); setMobileMenuOpen(false); }}
+                className="px-4 py-3 rounded-2xl text-sm font-medium text-left transition-colors duration-200"
+                style={{
+                  color: activeNav === i ? '#000000' : isDarkMode ? '#9ca3af' : '#6b7280',
+                  backgroundColor: activeNav === i ? '#f2b75f' : 'transparent',
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+            <button className={`mt-1 px-4 py-3 rounded-2xl font-medium text-sm flex items-center justify-center gap-2 transition-colors ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}>
               Let's Talk
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </button>
           </div>
-        </nav>
+        </div>
       </div>
 
       {/* Hero Section */}
-      <section className="px-6 py-20 mt-20 lg:px-12">
+      <section className="px-4 py-14 mt-24 sm:px-6 sm:py-20 sm:mt-20 lg:px-12">
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-12 lg:gap-16 items-center">
             {/* Left Content */}
-            <div className="space-y-8">
+            <div className="space-y-6 sm:space-y-8 text-center lg:text-left">
               {/* Available Badge */}
               <div className={`inline-flex items-center gap-2 px-4 py-3 rounded-full shadow-sm transition-all duration-300 cursor-pointer group ${isDarkMode ? 'bg-gray-800 opacity-60 hover:opacity-100' : 'bg-white opacity-60 hover:opacity-100'}`}>
                 <div className="w-2 h-2 bg-green-500 rounded-full"></div>
@@ -258,38 +376,38 @@ export default function Home() {
 
               {/* Main Heading */}
               <div className="space-y-4">
-                <h1 className="text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
+                <h1 className="text-3xl sm:text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-tight">
                   <span className={`transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>Hello, I'm</span>
                   <br />
                   <span style={{ color: '#f2b75f' }}>Rishabh.K.Sharma</span>
                 </h1>
 
-                <p className={`text-xl lg:text-2xl max-w-lg leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
+                <p className={`text-lg sm:text-xl lg:text-2xl max-w-lg mx-auto lg:mx-0 leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
                   Delivering enterprise-grade AI solutions powered by reasoning, retrieval, and automation.
                 </p>
               </div>
 
               {/* Stats */}
-              <div className="flex gap-12">
+              <div className="flex justify-center lg:justify-start gap-6 sm:gap-10 lg:gap-12 flex-wrap">
                 <div>
-                  <div className={`text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>3+</div>
+                  <div className={`text-2xl sm:text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>3+</div>
                   <div className={`text-sm transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Years Experience</div>
                 </div>
                 <div>
-                  <div className={`text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>20+</div>
+                  <div className={`text-2xl sm:text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>20+</div>
                   <div className={`text-sm transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Projects Delivered</div>
                 </div>
                 <div>
-                  <div className={`text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>10+</div>
+                  <div className={`text-2xl sm:text-3xl lg:text-4xl font-bold transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>10+</div>
                   <div className={`text-sm transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>Happy Clients</div>
                 </div>
               </div>
 
               {/* Action Buttons */}
-              <div className="flex gap-4">
+              <div className="flex flex-col sm:flex-row justify-center lg:justify-start gap-4">
                 <button
                   onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                  className="px-8 py-4 text-black rounded-full font-medium hover:opacity-90 transition-colors flex items-center gap-2"
+                  className="px-8 py-4 text-black rounded-full font-medium hover:opacity-90 transition-colors flex items-center justify-center gap-2"
                   style={{ backgroundColor: '#f2b75f' }}
                 >
                   View my work
@@ -305,30 +423,30 @@ export default function Home() {
 
             {/* Right Content - Profile Image */}
             <div className="relative flex justify-center lg:justify-start lg:pl-8">
-              <div className="relative">
+              <div className="relative w-full max-w-[20rem] sm:max-w-sm lg:max-w-none lg:w-[28rem]">
                 {/* Floating White/Dark Dot - Further top right of photo, visible and animated */}
-                <div 
-                  className="absolute -top-12 -right-12 w-16 h-16 rounded-full shadow-lg animate-float-slow z-20 transition-colors"
+                <div
+                  className="absolute -top-8 -right-8 w-12 h-12 sm:-top-12 sm:-right-12 sm:w-16 sm:h-16 rounded-full shadow-lg animate-float-slow z-20 transition-colors"
                   style={{ backgroundColor: isDarkMode ? '#1F1F1F' : 'white' }}
                 ></div>
-                
+
                 {/* Background Decorative Elements - Repositioned and animated */}
-                <div 
-                  className="absolute -top-16 -left-12 w-32 h-32 rounded-full opacity-60 animate-float-orange-1 transition-colors" 
+                <div
+                  className="absolute -top-10 -left-8 w-20 h-20 sm:-top-16 sm:-left-12 sm:w-32 sm:h-32 rounded-full opacity-60 animate-float-orange-1 transition-colors"
                   style={{ backgroundColor: isDarkMode ? '#57452A' : '#f2b75f' }}
                 ></div>
-                <div 
-                  className="absolute -bottom-8 -right-16 w-24 h-24 rounded-full opacity-40 animate-float-orange-2 transition-colors" 
+                <div
+                  className="absolute -bottom-6 -right-10 w-16 h-16 sm:-bottom-8 sm:-right-16 sm:w-24 sm:h-24 rounded-full opacity-40 animate-float-orange-2 transition-colors"
                   style={{ backgroundColor: isDarkMode ? '#57452A' : '#f2b75f' }}
                 ></div>
                 {/* Additional Orange Rounded Square - Bottom left */}
-                <div 
-                  className="absolute bottom-16 -left-12 w-20 h-20 rounded-2xl opacity-50 animate-float-square transition-colors" 
+                <div
+                  className="absolute bottom-10 -left-8 w-12 h-12 sm:bottom-16 sm:-left-12 sm:w-20 sm:h-20 rounded-2xl opacity-50 animate-float-square transition-colors"
                   style={{ backgroundColor: isDarkMode ? '#57452A' : '#f2b75f' }}
                 ></div>
-                
+
                 {/* Profile Card */}
-                <div className="relative rounded-3xl overflow-hidden shadow-xl z-10 w-[28rem] h-[34rem]">
+                <div className="relative rounded-3xl overflow-hidden shadow-xl z-10 aspect-[28/34] w-full">
                   <img src="/profile.png" alt="Rishabh K. Sharma" className="w-full h-full object-cover" />
                 </div>
               </div>
@@ -385,7 +503,7 @@ export default function Home() {
             <p className={`text-sm font-medium mb-4 transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
               FEATURED PROJECTS
             </p>
-            <h2 className={`text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
+            <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
               Selected work by Rishabh.k. Sharma
             </h2>
             <p className={`text-lg max-w-3xl mx-auto leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -504,16 +622,16 @@ export default function Home() {
       />
 
       {/* About Section */}
-      <section id="about" className="px-6 py-24 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#EAE6D9' }}>
+      <section id="about" className="px-6 py-16 sm:py-24 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#EAE6D9' }}>
         <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-2 gap-16 items-center">
+          <div className="grid lg:grid-cols-2 gap-10 lg:gap-16 items-center">
 
             {/* Left — Photo card */}
             <div className="relative flex justify-center lg:justify-start lg:pl-8">
-              <div className="relative">
+              <div className="relative w-full max-w-[20rem] sm:max-w-sm lg:max-w-none lg:w-[520px]">
                 {/* Only bottom orange circle kept */}
                 <div
-                  className="absolute -bottom-8 -right-16 w-24 h-24 rounded-full opacity-40 animate-float-orange-2 transition-colors"
+                  className="absolute -bottom-6 -right-8 w-16 h-16 sm:-bottom-8 sm:-right-16 sm:w-24 sm:h-24 rounded-full opacity-40 animate-float-orange-2 transition-colors"
                   style={{ backgroundColor: isDarkMode ? '#57452A' : '#f2b75f' }}
                 />
 
@@ -521,7 +639,7 @@ export default function Home() {
                 <div
                   className="group relative rounded-3xl overflow-hidden shadow-xl z-10 cursor-pointer"
                 >
-                  <div className="w-[520px] h-[34rem] transition-transform duration-500 ease-out group-hover:scale-[1.05] overflow-hidden">
+                  <div className="w-full aspect-[520/544] transition-transform duration-500 ease-out group-hover:scale-[1.05] overflow-hidden">
                     <img src="/profile.png" alt="Rishabh K. Sharma" className="w-full h-full object-cover" style={{ objectPosition: '50% 30%' }} />
                   </div>
                 </div>
@@ -529,14 +647,14 @@ export default function Home() {
             </div>
 
             {/* Right — Content */}
-            <div className="space-y-6">
+            <div className="space-y-6 text-center lg:text-left">
               {/* Label */}
               <p className="text-sm font-semibold tracking-widest uppercase" style={{ color: '#f2b75f' }}>
                 About Rishabh
               </p>
 
               {/* Heading */}
-              <h2 className={`text-4xl lg:text-5xl font-bold leading-tight transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
+              <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold leading-tight transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
                 AI Engineer architecting production-grade intelligent systems
               </h2>
 
@@ -552,7 +670,7 @@ export default function Home() {
               </p>
 
               {/* Stats row */}
-              <div className="grid grid-cols-4 gap-3 pt-4">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-4">
                 {[
                   { value: '3+',  label: 'Years\nExperience' },
                   { value: '20+', label: 'Projects\nDelivered' },
@@ -591,7 +709,7 @@ export default function Home() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
               Skills &amp; Tech Stack
             </p>
-            <h2 className={`text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
+            <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
               AI/ML, GenAI &amp; beyond
             </h2>
             <p className={`text-lg max-w-2xl mx-auto leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -676,7 +794,7 @@ export default function Home() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
               Services
             </p>
-            <h2 className={`text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
+            <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
               What I build &amp; deliver
             </h2>
             <p className={`text-lg max-w-2xl mx-auto leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -822,7 +940,7 @@ export default function Home() {
             <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
               Experience
             </p>
-            <h2 className={`text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
+            <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
               My journey so far
             </h2>
             <p className={`text-lg max-w-2xl mx-auto leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -830,8 +948,8 @@ export default function Home() {
             </p>
           </div>
 
-          {/* Road Map */}
-          <div ref={expSectionRef} className="relative w-full" style={{ height: '420px' }}>
+          {/* Road Map (desktop) */}
+          <div ref={expSectionRef} className="hidden lg:block relative w-full" style={{ height: '420px' }}>
             {/* SVG dotted direction path */}
             <svg
               viewBox="0 0 1200 230"
@@ -944,62 +1062,7 @@ export default function Home() {
             </div>
 
             {/* Nodes */}
-            {[
-              {
-                label: 'High School',
-                company: 'Shree Vaishnav Academy',
-                period: 'Before 2019',
-                bullets: ['Foundation in science & academics'],
-                left: '13%',
-                top: '39%',
-                popupUp: false,
-              },
-              {
-                label: 'B.Sc. Biotechnology, Life Sciences & Chemistry',
-                company: 'Maharaja Ranjeet Singh College',
-                period: '2019 – 2022',
-                bullets: ['Built analytical and research thinking', 'Transitioned interest toward technology and data'],
-                left: '27%',
-                top: '35%',
-                popupUp: false,
-              },
-              {
-                label: 'Student Intern',
-                company: 'InfoBeans Foundation',
-                period: '2022 – 2024',
-                bullets: ['Learned Full Stack Development', 'Java & MERN stack (MongoDB, Express, React, Node.js)', 'Built real-world projects under mentorship'],
-                left: '41%',
-                top: '55%',
-                popupUp: true,
-              },
-              {
-                label: 'AI ML Intern',
-                company: 'InfoBeans Technologies',
-                period: 'Feb 2024 – Jun 2024',
-                bullets: ['Built ML/DL models for NLP, computer vision & predictive analytics', 'Developed LLM-based & GenAI prototypes', 'Deployed models on Azure / AWS'],
-                left: '54%',
-                top: '52%',
-                popupUp: true,
-              },
-              {
-                label: 'AI ML Engineer',
-                company: 'InfoBeans Technologies',
-                period: '2024 – Present',
-                bullets: ['Built cognitive search system processing 1M+ documents (RAG + GraphRAG)', 'Delivered agentic AI systems using LangGraph, CrewAI & Azure AI Foundry', 'Trained YOLO & video models for real-time inference', 'Led in-house AI initiatives as project lead'],
-                left: '68%',
-                top: '35%',
-                popupUp: false,
-              },
-              {
-                label: 'AI Trainer & Speaker',
-                company: 'Others / Community',
-                period: 'Ongoing',
-                bullets: ['President, InfoBeans Foundation Alumni Council (~400 students)', 'AI/ML Trainer at InfoBeans Foundation', 'Guest lecturer at MU20 University & Sage University', 'AI Blog writer at InfoBeans Technologies'],
-                left: '82%',
-                top: '36%',
-                popupUp: false,
-              },
-            ].map((exp, i) => (
+            {experienceNodes.map((exp, i) => (
               <div
                 key={i}
                 className="absolute"
@@ -1084,6 +1147,76 @@ export default function Home() {
               </div>
             ))}
           </div>
+
+          {/* Road Map (mobile / tablet — simple vertical timeline) */}
+          <div className="lg:hidden relative pl-8">
+            <div
+              className="absolute top-2 bottom-2 w-0.5"
+              style={{ left: '15px', backgroundColor: '#f2b75f', opacity: 0.35 }}
+            />
+            <div className="space-y-8">
+              {experienceNodes.map((exp, i) => (
+                <div key={i} className="relative">
+                  <div
+                    className="absolute w-8 h-8 rounded-full flex items-center justify-center shadow-lg"
+                    style={{ left: '-32px', top: 0, backgroundColor: isDarkMode ? '#2A2A2A' : 'white', border: '3px solid #f2b75f' }}
+                  >
+                    <svg className="w-3.5 h-3.5" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" />
+                      <path strokeLinecap="round" strokeLinejoin="round" d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                    </svg>
+                  </div>
+                  <div className={`rounded-2xl shadow-lg p-5 ${isDarkMode ? 'bg-[#1E1E1E]' : 'bg-white'}`}>
+                    <div className="flex items-start justify-between gap-2 mb-2 flex-wrap">
+                      <h3 className={`text-base font-bold leading-tight ${isDarkMode ? 'text-white' : 'text-black'}`}>{exp.label}</h3>
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium whitespace-nowrap flex-shrink-0 ${isDarkMode ? 'bg-[#2A2A2A] text-gray-400' : 'bg-gray-100 text-gray-500'}`}>
+                        {exp.period}
+                      </span>
+                    </div>
+                    <div className="flex items-center gap-2 mb-3">
+                      <div className="w-6 h-6 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: isDarkMode ? '#2A1F0F' : '#FEF3E2' }}>
+                        <svg className="w-3 h-3" fill="none" stroke="#f2b75f" strokeWidth={2} viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M21 13.255A23.931 23.931 0 0112 15c-3.183 0-6.22-.62-9-1.745M16 6V4a2 2 0 00-2-2h-4a2 2 0 00-2 2v2m4 6h.01M5 20h14a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <span className={`text-sm font-medium ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>{exp.company}</span>
+                    </div>
+                    <ul className="space-y-2">
+                      {exp.bullets.map((b) => (
+                        <li key={b} className="flex items-start gap-2">
+                          <svg className="w-4 h-4 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
+                            <circle cx="8" cy="8" r="8" fill="#f2b75f" opacity="0.2" />
+                            <path d="M5 8l2 2 4-4" stroke="#f2b75f" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+                          </svg>
+                          <span className={`text-xs ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>{b}</span>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                </div>
+              ))}
+
+              {/* Infinity end marker */}
+              <div className="relative flex items-center gap-3 pt-1">
+                <div
+                  className="absolute w-8 h-8 rounded-full flex items-center justify-center shadow-lg"
+                  style={{ left: '-32px', top: 0, backgroundColor: isDarkMode ? '#2A2A2A' : 'white', border: '3px solid #f2b75f' }}
+                >
+                  <svg viewBox="0 0 40 20" width="18" height="9" fill="none" strokeLinecap="round" strokeLinejoin="round">
+                    <path
+                      d="M 20,10 C 20,4 14,1 10,4 C 6,7 6,13 10,16 C 14,19 20,16 20,10 C 20,4 26,1 30,4 C 34,7 34,13 30,16 C 26,19 20,16 20,10 Z"
+                      stroke="#f2b75f"
+                      strokeWidth="2"
+                      fill="none"
+                    />
+                  </svg>
+                </div>
+                <span className={`text-sm font-semibold ${isDarkMode ? 'text-gray-300' : 'text-gray-700'}`}>
+                  The journey never ends — keep building, keep growing.
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -1094,7 +1227,7 @@ export default function Home() {
       <section className="px-6 pb-28 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#DFDBCD' }}>
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-16">
-            <h2 className={`text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
+            <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-6 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
               How I design and build
             </h2>
             <p className={`text-lg max-w-2xl mx-auto leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -1104,9 +1237,9 @@ export default function Home() {
 
           {/* Process cards */}
           <div className="relative">
-            {/* Connecting line through badge centers */}
+            {/* Connecting line through badge centers (desktop 5-col layout only) */}
             <div
-              className="absolute"
+              className="hidden lg:block absolute"
               style={{
                 top: '56px',
                 left: '10%',
@@ -1117,7 +1250,7 @@ export default function Home() {
               }}
             />
 
-            <div className="grid grid-cols-5 gap-5">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-5">
               {[
                 {
                   num: 1,
@@ -1182,12 +1315,12 @@ export default function Home() {
       <section id="certifications" className="pb-28" style={{ backgroundColor: isDarkMode ? '#181716' : '#D2CDBC' }}>
         {/* Header */}
         <div className="max-w-7xl mx-auto px-6 lg:px-12 mb-14">
-          <div className="flex items-start justify-between">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6">
             <div className="max-w-xl">
               <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
                 Certifications
               </p>
-              <h2 className={`text-4xl lg:text-5xl font-bold mb-4 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
+              <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
                 Licenses &amp; Certifications
               </h2>
               <p className={`text-base leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -1196,7 +1329,7 @@ export default function Home() {
             </div>
             <button
               onClick={() => router.push('/certifications')}
-              className="mt-2 px-8 py-4 text-black rounded-full font-medium text-sm flex items-center gap-2 hover:gap-3 hover:opacity-90 transition-all duration-200 flex-shrink-0 cursor-pointer"
+              className="sm:mt-2 px-8 py-4 text-black rounded-full font-medium text-sm flex items-center justify-center gap-2 hover:gap-3 hover:opacity-90 transition-all duration-200 flex-shrink-0 cursor-pointer self-start"
               style={{ backgroundColor: '#f2b75f' }}
             >
               View all
@@ -1216,7 +1349,7 @@ export default function Home() {
               left: 0,
               top: 0,
               bottom: 0,
-              width: '160px',
+              width: 'clamp(32px, 10vw, 160px)',
               background: `linear-gradient(to right, ${isDarkMode ? '#181716' : '#D2CDBC'} 0%, transparent 100%)`,
               zIndex: 20,
               pointerEvents: 'none',
@@ -1229,7 +1362,7 @@ export default function Home() {
               right: 0,
               top: 0,
               bottom: 0,
-              width: '160px',
+              width: 'clamp(32px, 10vw, 160px)',
               background: `linear-gradient(to left, ${isDarkMode ? '#181716' : '#D2CDBC'} 0%, transparent 100%)`,
               zIndex: 20,
               pointerEvents: 'none',
@@ -1239,7 +1372,7 @@ export default function Home() {
             {[...featuredCerts, ...featuredCerts].map((certData, i) => (
               <div
                 key={i}
-                className="relative flex-shrink-0 w-[300px] cursor-pointer"
+                className="relative flex-shrink-0 w-[70vw] max-w-[300px] cursor-pointer"
                 style={{ height: '260px', zIndex: hoveredCert === i ? 10 : 1 }}
                 onClick={() => setSelectedCert(i)}
                 onMouseEnter={() => setHoveredCert(i)}
@@ -1327,7 +1460,7 @@ export default function Home() {
                 position: 'fixed',
                 top: '50%',
                 left: '50%',
-                width: '440px',
+                width: 'min(440px, calc(100vw - 2rem))',
                 maxHeight: '88vh',
                 overflowY: 'auto',
                 zIndex: 100,
@@ -1428,12 +1561,12 @@ export default function Home() {
       <section id="blog" className="px-6 pb-28 lg:px-12" style={{ backgroundColor: isDarkMode ? '#181716' : '#D2CDBC' }}>
         <div className="max-w-7xl mx-auto">
           {/* Header row */}
-          <div className="flex items-start justify-between mb-14">
+          <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-6 mb-14">
             <div className="max-w-xl">
               <p className="text-sm font-semibold tracking-widest uppercase mb-4" style={{ color: '#f2b75f' }}>
                 Blog
               </p>
-              <h2 className={`text-4xl lg:text-5xl font-bold mb-4 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
+              <h2 className={`text-3xl sm:text-4xl lg:text-5xl font-bold mb-4 transition-colors ${isDarkMode ? 'text-white' : 'text-black'}`}>
                 Articles on AI, systems,<br />and engineering
               </h2>
               <p className={`text-base leading-relaxed transition-colors ${isDarkMode ? 'text-gray-400' : 'text-gray-600'}`}>
@@ -1442,7 +1575,7 @@ export default function Home() {
             </div>
             <button
               onClick={() => router.push('/blog')}
-              className="mt-2 px-8 py-4 text-black rounded-full font-medium text-sm flex items-center gap-2 hover:gap-3 hover:opacity-90 transition-all duration-200 flex-shrink-0 cursor-pointer"
+              className="sm:mt-2 px-8 py-4 text-black rounded-full font-medium text-sm flex items-center justify-center gap-2 hover:gap-3 hover:opacity-90 transition-all duration-200 flex-shrink-0 cursor-pointer self-start"
               style={{ backgroundColor: '#f2b75f' }}
             >
               View all posts
@@ -1547,11 +1680,11 @@ export default function Home() {
       {/* CTA Section — intentionally inverted: dark in light mode, light in dark mode */}
       <section
         style={{ backgroundColor: isDarkMode ? '#e9e7da' : '#141210' }}
-        className="px-6 py-32 lg:px-12"
+        className="px-6 py-20 sm:py-32 lg:px-12"
       >
         <div className="max-w-3xl mx-auto text-center">
           {/* Heading */}
-          <h2 className="text-5xl lg:text-6xl font-bold leading-tight mb-6">
+          <h2 className="text-3xl sm:text-5xl lg:text-6xl font-bold leading-tight mb-6">
             <span style={{ color: isDarkMode ? '#111827' : '#ffffff' }}>Build your next </span>
             <span style={{ color: '#f2b75f' }}>modern</span>
             <span style={{ color: isDarkMode ? '#111827' : '#ffffff' }}> experience</span>
@@ -1566,9 +1699,9 @@ export default function Home() {
           </p>
 
           {/* Buttons */}
-          <div className="flex items-center justify-center gap-4 mb-10">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-10">
             <button
-              className="px-8 py-4 rounded-full font-semibold text-black flex items-center gap-2 hover:opacity-90 transition-all duration-200 hover:gap-3"
+              className="w-full sm:w-auto px-8 py-4 rounded-full font-semibold text-black flex items-center justify-center gap-2 hover:opacity-90 transition-all duration-200 hover:gap-3"
               style={{ backgroundColor: '#f2b75f' }}
             >
               Start a conversation
@@ -1578,7 +1711,7 @@ export default function Home() {
             </button>
 
             <button
-              className="px-8 py-4 rounded-full font-semibold flex items-center gap-2 transition-all duration-200 hover:opacity-80"
+              className="w-full sm:w-auto px-8 py-4 rounded-full font-semibold flex items-center justify-center gap-2 transition-all duration-200 hover:opacity-80"
               style={{
                 backgroundColor: isDarkMode ? '#d4d0c8' : '#2a2a2a',
                 color: isDarkMode ? '#111827' : '#e5e7eb',
@@ -1708,7 +1841,7 @@ export default function Home() {
 
         {/* Bottom bar */}
         <div
-          className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex items-center justify-between"
+          className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left"
           style={{ borderTop: `1px solid ${isDarkMode ? '#2a2a2a' : '#e5e7eb'}` }}
         >
           <p className={`text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -1723,7 +1856,7 @@ export default function Home() {
             </button>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 ${isDarkMode ? 'bg-[#2a2a2a] text-white hover:bg-[#3a3a3a]' : 'bg-gray-100 text-black hover:bg-gray-200'}`}
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 flex-shrink-0 ${isDarkMode ? 'bg-[#2a2a2a] text-white hover:bg-[#3a3a3a]' : 'bg-gray-100 text-black hover:bg-gray-200'}`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />

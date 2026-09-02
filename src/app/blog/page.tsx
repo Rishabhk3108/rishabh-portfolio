@@ -89,6 +89,7 @@ export default function BlogPage() {
   const lastScrollY = useRef(0);
   const navBtnRefs = useRef<(HTMLButtonElement | null)[]>([]);
   const [pillStyle, setPillStyle] = useState({ left: 0, width: 0 });
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   // Blog is always index 4 (Home=0, Work=1, About=2, Certifications=3, Blog=4, Contact=5)
   const BLOG_NAV_IDX = 4;
 
@@ -110,6 +111,13 @@ export default function BlogPage() {
     setPillStyle({ left: btn.offsetLeft, width: btn.offsetWidth });
   }, []);
 
+  // Close the mobile menu on resize back to desktop
+  useEffect(() => {
+    const onResize = () => { if (window.innerWidth >= 768) setMobileMenuOpen(false); };
+    window.addEventListener('resize', onResize);
+    return () => window.removeEventListener('resize', onResize);
+  }, []);
+
   const navLinks = [
     { label: 'Home',           action: () => router.push('/') },
     { label: 'Work',           action: () => router.push('/#projects') },
@@ -129,29 +137,29 @@ export default function BlogPage() {
   });
 
   return (
-    <div className="min-h-screen" style={{ backgroundColor: isDarkMode ? '#181716' : '#e9e7da' }}>
+    <div className="min-h-screen overflow-x-hidden" style={{ backgroundColor: isDarkMode ? '#181716' : '#e9e7da' }}>
 
       {/* ── Navbar ── */}
       <div
-        className={`px-6 py-3 lg:px-12 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navHidden ? '-translate-y-full' : 'translate-y-0'}`}
+        className={`px-4 py-3 sm:px-6 lg:px-12 fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${navHidden ? '-translate-y-full' : 'translate-y-0'}`}
         style={{ backgroundColor: isDarkMode ? '#181716' : '#e9e7da' }}
       >
         <nav
-          className="flex items-center justify-center px-6 py-2 rounded-full shadow-lg mx-auto max-w-6xl relative"
+          className="flex items-center justify-between md:justify-center px-3 sm:px-6 py-2 rounded-full shadow-lg mx-auto max-w-6xl relative"
           style={{ backgroundColor: isDarkMode ? '#1E1E1E' : '#EEEDE9' }}
         >
           {/* Logo */}
-          <div className="flex items-center gap-3 absolute left-6">
+          <div className="flex items-center gap-2 sm:gap-3 md:absolute md:left-6">
             <button
               onClick={() => router.push('/')}
-              className="w-10 h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-transparent hover:ring-[#f2b75f] transition-all duration-300"
+              className="w-9 h-9 sm:w-10 sm:h-10 rounded-full overflow-hidden flex-shrink-0 ring-2 ring-transparent hover:ring-[#f2b75f] transition-all duration-300"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img src="/profile.png" alt="Rishabh.k. Sharma" className="w-full h-full object-cover" />
             </button>
             <button
               onClick={() => router.push('/')}
-              className={`font-semibold text-lg transition-all duration-300 hover:scale-105 ${isDarkMode ? 'text-white' : 'text-black'}`}
+              className={`hidden sm:inline font-semibold text-lg transition-all duration-300 hover:scale-105 ${isDarkMode ? 'text-white' : 'text-black'}`}
               onMouseEnter={e => ((e.target as HTMLElement).style.color = '#f2b75f')}
               onMouseLeave={e => ((e.target as HTMLElement).style.color = '')}
             >
@@ -193,7 +201,7 @@ export default function BlogPage() {
           </div>
 
           {/* Right side */}
-          <div className="flex items-center gap-4 absolute right-6">
+          <div className="flex items-center gap-2 sm:gap-4 md:absolute md:right-6">
             <button
               onClick={() => setIsDarkMode(!isDarkMode)}
               className={`p-2 rounded-full transition-colors ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-100'}`}
@@ -208,14 +216,60 @@ export default function BlogPage() {
                 </svg>
               )}
             </button>
-            <button className={`px-5 py-2 rounded-full font-medium transition-colors flex items-center gap-2 text-sm ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}>
+            <button className={`hidden sm:flex px-5 py-2 rounded-full font-medium transition-colors items-center gap-2 text-sm ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}>
+              Let&apos;s Talk
+              <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+              </svg>
+            </button>
+
+            {/* Hamburger toggle (mobile only) */}
+            <button
+              onClick={() => setMobileMenuOpen(o => !o)}
+              aria-label="Toggle menu"
+              aria-expanded={mobileMenuOpen}
+              className={`md:hidden p-2 rounded-full transition-colors ${isDarkMode ? 'bg-gray-800 hover:bg-gray-700' : 'bg-white hover:bg-gray-100'}`}
+            >
+              <svg className={`w-4 h-4 ${isDarkMode ? 'text-white' : 'text-black'}`} fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                {mobileMenuOpen ? (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                ) : (
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+                )}
+              </svg>
+            </button>
+          </div>
+        </nav>
+
+        {/* Mobile menu panel */}
+        <div
+          className={`md:hidden mx-auto max-w-6xl overflow-hidden transition-all duration-300 ease-in-out ${mobileMenuOpen ? 'max-h-96 opacity-100 mt-2' : 'max-h-0 opacity-0 mt-0'}`}
+        >
+          <div
+            className="flex flex-col gap-1 p-3 rounded-3xl shadow-lg"
+            style={{ backgroundColor: isDarkMode ? '#1E1E1E' : '#EEEDE9' }}
+          >
+            {navLinks.map((item, i) => (
+              <button
+                key={item.label}
+                onClick={() => { item.action(); setMobileMenuOpen(false); }}
+                className="px-4 py-3 rounded-2xl text-sm font-medium text-left transition-colors duration-200"
+                style={{
+                  color: i === BLOG_NAV_IDX ? '#000000' : isDarkMode ? '#9ca3af' : '#6b7280',
+                  backgroundColor: i === BLOG_NAV_IDX ? '#f2b75f' : 'transparent',
+                }}
+              >
+                {item.label}
+              </button>
+            ))}
+            <button className={`mt-1 px-4 py-3 rounded-2xl font-medium text-sm flex items-center justify-center gap-2 transition-colors ${isDarkMode ? 'bg-gray-200 text-black hover:bg-gray-300' : 'bg-black text-white hover:bg-gray-800'}`}>
               Let&apos;s Talk
               <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
               </svg>
             </button>
           </div>
-        </nav>
+        </div>
       </div>
 
       {/* ── Back Button ── */}
@@ -424,7 +478,7 @@ export default function BlogPage() {
         </div>
 
         <div
-          className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex items-center justify-between"
+          className="max-w-7xl mx-auto px-6 lg:px-12 py-5 flex flex-col sm:flex-row items-center justify-between gap-4 text-center sm:text-left"
           style={{ borderTop: `1px solid ${isDarkMode ? '#2a2a2a' : '#e5e7eb'}` }}
         >
           <p className={`text-sm ${isDarkMode ? 'text-gray-500' : 'text-gray-400'}`}>
@@ -435,7 +489,7 @@ export default function BlogPage() {
             <button className={`text-sm transition-colors ${isDarkMode ? 'text-gray-500 hover:text-white' : 'text-gray-400 hover:text-black'}`}>Terms of Service</button>
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 ${isDarkMode ? 'bg-[#2a2a2a] text-white hover:bg-[#3a3a3a]' : 'bg-gray-100 text-black hover:bg-gray-200'}`}
+              className={`w-9 h-9 rounded-full flex items-center justify-center transition-all duration-200 hover:scale-110 flex-shrink-0 ${isDarkMode ? 'bg-[#2a2a2a] text-white hover:bg-[#3a3a3a]' : 'bg-gray-100 text-black hover:bg-gray-200'}`}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 10l7-7m0 0l7 7m-7-7v18" />
