@@ -140,6 +140,13 @@ export const projects: Project[] = [
       roleClosing: ['My contribution spanned the stack rather than being confined to one layer, which gave me hands-on exposure to how a multi-tenant, AI-augmented enterprise system fits together end-to-end — from database schema and async API design, through event-driven infrastructure, to the frontend surfaces users actually interact with.'],
       outcome: 'The platform delivered a working, production-oriented CRM system covering the full lead-to-close workflow, augmented with AI features that reduced manual effort in summarization, lead prioritization, and data lookup. Working across the stack on this project gave me practical experience with the real engineering challenges of multi-tenant SaaS architecture: data isolation, async event-driven design, and safely scoping AI features to tenant-specific data.',
       note: 'This project was built by a cross-functional engineering team. The Project Overview above describes the platform as a whole; the "My Role & Contribution" section reflects specifically what I personally worked on.',
+      diagrams: [
+        {
+          label: 'Request Flow',
+          image: '/diagrams/crm-architecture.svg',
+          caption: 'A request enters through the FastAPI layer, then fans out to a cached PostgreSQL read/write path, a RAG retrieval path through the vector DB to the LLM, and an async event path through Kafka to Celery workers.',
+        },
+      ],
     },
   },
   {
