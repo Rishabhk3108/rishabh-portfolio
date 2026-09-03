@@ -3,6 +3,7 @@
 import { use, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getProjectBySlug } from '@/lib/projects-data';
+import CrmArchitectureDiagram from './CrmArchitectureDiagram';
 
 const PROJECTS_NAV_IDX = 1;
 
@@ -374,25 +375,41 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                 </section>
               )}
 
-              {/* ── Diagrams ── */}
+              {/* ── CRM unified-flow architecture diagram (live SVG, not an image) ── */}
+              {project.slug === 'ai-enterprise-crm-platform' && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <h2 className={`text-2xl font-bold mb-2 ${headingText}`}>Flow &amp; Architecture</h2>
+                    <p className={`text-sm mb-6 ${mutedText}`}>
+                      Every entry point — lead creation, NL query, account summary, search, inbound
+                      messages — through one auth gate and one Kafka → Celery async backbone. Scroll to
+                      explore; it redraws for the current theme.
+                    </p>
+                    <CrmArchitectureDiagram isDarkMode={isDarkMode} />
+                  </div>
+                </section>
+              )}
+
+              {/* ── Diagrams (embedded inline — no click needed to see them) ── */}
               {detail.diagrams && detail.diagrams.length > 0 && (
                 <section className="px-6 lg:px-12 py-10">
                   <div className="max-w-5xl mx-auto">
                     <h2 className={`text-2xl font-bold mb-6 ${headingText}`}>Flow &amp; Architecture Diagrams</h2>
-                    <div className="grid md:grid-cols-2 gap-6">
+                    <div className="space-y-10">
                       {detail.diagrams.map((diag, i) => (
-                        <button
-                          key={i}
-                          onClick={() => setLightboxImg(diag.image)}
-                          className={`text-left rounded-3xl overflow-hidden p-5 cursor-pointer transition-shadow hover:shadow-xl ${cardBg}`}
-                        >
-                          <div className={`relative aspect-video rounded-2xl overflow-hidden mb-4 ${isDarkMode ? 'bg-[#2A2A2A]' : 'bg-gray-100'}`}>
+                        <div key={i}>
+                          <div className={`rounded-3xl overflow-hidden p-4 sm:p-6 ${cardBg}`}>
                             {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <img src={diag.image} alt={diag.label} className="w-full h-full object-contain" />
+                            <img
+                              src={diag.image}
+                              alt={diag.label}
+                              onClick={() => setLightboxImg(diag.image)}
+                              className="w-full h-auto rounded-2xl cursor-zoom-in"
+                            />
                           </div>
-                          <p className={`font-bold ${headingText}`}>{diag.label}</p>
+                          <p className={`font-bold mt-4 ${headingText}`}>{diag.label}</p>
                           {diag.caption && <p className={`text-sm mt-1 ${mutedText}`}>{diag.caption}</p>}
-                        </button>
+                        </div>
                       ))}
                     </div>
                   </div>
