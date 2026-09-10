@@ -573,7 +573,7 @@ export default function Home() {
                 >
                   {project.image && (
                     // eslint-disable-next-line @next/next/no-img-element
-                    <img src={project.image} alt={project.name} className="absolute inset-0 w-full h-full object-cover" />
+                    <img src={project.image} alt={project.name} className="absolute inset-0 w-full h-full object-cover object-top" />
                   )}
                   {/* Bookmark button */}
                   <button

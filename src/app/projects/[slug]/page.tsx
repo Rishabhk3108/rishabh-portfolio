@@ -7,6 +7,19 @@ import CrmArchitectureDiagram from './CrmArchitectureDiagram';
 
 const PROJECTS_NAV_IDX = 1;
 
+// Bento-style gallery: a fixed, hand-tuned cycle of tile sizes (not re-randomized
+// per render — that would shift the whole layout on every reload) so screenshots
+// read as an organic mosaic instead of a uniform grid.
+const GALLERY_SPANS = [
+  'col-span-2 row-span-2',
+  'col-span-1 row-span-1',
+  'col-span-1 row-span-2',
+  'col-span-1 row-span-1',
+  'col-span-2 row-span-1',
+  'col-span-1 row-span-1',
+  'col-span-1 row-span-1',
+];
+
 function CheckBullet() {
   return (
     <svg className="w-4 h-4 flex-shrink-0 mt-0.5" viewBox="0 0 16 16" fill="none">
@@ -301,7 +314,7 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
               <div className="relative rounded-3xl overflow-hidden shadow-xl h-56 sm:h-72 lg:h-96 mb-8" style={{ background: project.previewBg }}>
                 {project.image && (
                   // eslint-disable-next-line @next/next/no-img-element
-                  <img src={project.image} alt={project.name} className="absolute inset-0 w-full h-full object-cover" />
+                  <img src={project.image} alt={project.name} className="absolute inset-0 w-full h-full object-cover object-top" />
                 )}
               </div>
 
@@ -354,20 +367,32 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
 
           {detail ? (
             <>
-              {/* ── Gallery ── */}
+              {/* ── Gallery (bento-style: varied tile sizes, not a uniform grid) ── */}
               {detail.gallery && detail.gallery.length > 0 && (
                 <section className="px-6 lg:px-12 py-10">
                   <div className="max-w-5xl mx-auto">
                     <h2 className={`text-2xl font-bold mb-6 ${headingText}`}>Gallery</h2>
-                    <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                    <div className="grid grid-cols-2 lg:grid-cols-4 grid-flow-row-dense auto-rows-[130px] sm:auto-rows-[150px] lg:auto-rows-[170px] gap-4">
                       {detail.gallery.map((img, i) => (
                         <button
                           key={i}
                           onClick={() => setLightboxImg(img)}
-                          className="relative rounded-2xl overflow-hidden aspect-video group cursor-pointer"
+                          className={`relative rounded-2xl overflow-hidden group cursor-zoom-in ${GALLERY_SPANS[i % GALLERY_SPANS.length]}`}
                         >
                           {/* eslint-disable-next-line @next/next/no-img-element */}
-                          <img src={img} alt={`${project.name} screenshot ${i + 1}`} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105" />
+                          <img
+                            src={img}
+                            alt={`${project.name} screenshot ${i + 1}`}
+                            className="w-full h-full object-cover object-top transition-transform duration-500 ease-out group-hover:scale-110"
+                          />
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/30 transition-colors duration-300 flex items-center justify-center">
+                            <svg
+                              className="w-6 h-6 text-white opacity-0 group-hover:opacity-100 scale-90 group-hover:scale-100 transition-all duration-300"
+                              fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            >
+                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M21 21l-4.35-4.35M11 19a8 8 0 100-16 8 8 0 000 16zM11 8v6M8 11h6" />
+                            </svg>
+                          </div>
                         </button>
                       ))}
                     </div>
@@ -382,8 +407,8 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                     <h2 className={`text-2xl font-bold mb-2 ${headingText}`}>Flow &amp; Architecture</h2>
                     <p className={`text-sm mb-6 ${mutedText}`}>
                       Every entry point — lead creation, NL query, account summary, search, inbound
-                      messages — through one auth gate and one Kafka → Celery async backbone. Scroll to
-                      explore; it redraws for the current theme.
+                      messages — through one auth gate and one Kafka → Celery async backbone. Hover (or
+                      tap) any step for more detail; it redraws for the current theme.
                     </p>
                     <CrmArchitectureDiagram isDarkMode={isDarkMode} />
                   </div>

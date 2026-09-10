@@ -301,7 +301,7 @@ export default function ProjectsPage() {
                   <div className="relative h-40 overflow-hidden" style={{ background: project.previewBg }}>
                     {project.image && (
                       // eslint-disable-next-line @next/next/no-img-element
-                      <img src={project.image} alt={project.name} className="w-full h-full object-cover" />
+                      <img src={project.image} alt={project.name} className="w-full h-full object-cover object-top" />
                     )}
                     <div
                       className="absolute inset-0"
