@@ -4,6 +4,10 @@ import { use, useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { getProjectBySlug } from '@/lib/projects-data';
 import CrmArchitectureDiagram from './CrmArchitectureDiagram';
+import EnrollmentFlowDiagrams from './EnrollmentFlowDiagrams';
+import CognitiveSearchFlowDiagrams from './CognitiveSearchFlowDiagrams';
+import AuditFlowDiagrams from './AuditFlowDiagrams';
+import InterviewAgentFlowDiagrams from './InterviewAgentFlowDiagrams';
 
 const PROJECTS_NAV_IDX = 1;
 
@@ -411,6 +415,68 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                       tap) any step for more detail; it redraws for the current theme.
                     </p>
                     <CrmArchitectureDiagram isDarkMode={isDarkMode} />
+                  </div>
+                </section>
+              )}
+
+              {/* ── Enrollment Portal process flows (live HTML, not an image) ── */}
+              {project.slug === 'enterprise-enrollment-portal' && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <h2 className={`text-2xl font-bold mb-2 ${headingText}`}>Flow &amp; Architecture</h2>
+                    <p className={`text-sm mb-6 ${mutedText}`}>
+                      Seven end-to-end flows — org onboarding, enrollment, payroll, routing &amp; autoscaling,
+                      disaster recovery, mobile sync, and CI/CD. Hover (or tap) any step for more detail; it
+                      redraws for the current theme.
+                    </p>
+                    <EnrollmentFlowDiagrams isDarkMode={isDarkMode} />
+                  </div>
+                </section>
+              )}
+
+              {/* ── Cognitive Search process flows (live HTML, not an image) ── */}
+              {project.slug === 'ai-cognitive-search-system' && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <h2 className={`text-2xl font-bold mb-2 ${headingText}`}>Flow &amp; Architecture</h2>
+                    <p className={`text-sm mb-6 ${mutedText}`}>
+                      Seven flows — document ingestion, OmniRAG query routing, vector retrieval, graph
+                      traversal, hybrid fusion, Salesforce/MuleSoft integration, and monitoring. Hover (or
+                      tap) any step for more detail; it redraws for the current theme.
+                    </p>
+                    <CognitiveSearchFlowDiagrams isDarkMode={isDarkMode} />
+                  </div>
+                </section>
+              )}
+
+              {/* ── Audit Management System process flows (live HTML, not an image) ── */}
+              {project.slug === 'ai-audit-management-system' && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <h2 className={`text-2xl font-bold mb-2 ${headingText}`}>Flow &amp; Architecture</h2>
+                    <p className={`text-sm mb-6 ${mutedText}`}>
+                      Seven flows — intake &amp; parsing, knowledge-graph candidate retrieval, four parallel
+                      scoring agents, fair ranking, human review &amp; override, CI/CD, and the audit trail
+                      that runs beneath all of it. Hover (or tap) any step for more detail; it redraws for
+                      the current theme.
+                    </p>
+                    <AuditFlowDiagrams isDarkMode={isDarkMode} />
+                  </div>
+                </section>
+              )}
+
+              {/* ── AI Interview Agent process flows (live HTML, not an image) ── */}
+              {project.slug === 'ai-interview-agent' && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <h2 className={`text-2xl font-bold mb-2 ${headingText}`}>Flow &amp; Architecture</h2>
+                    <p className={`text-sm mb-6 ${mutedText}`}>
+                      Seven flows — JD analysis &amp; scheduling, autonomous meeting join, the real-time
+                      conversation with barge-in, adaptive follow-ups, engagement tracking, evaluation, and
+                      failure recovery. Hover (or tap) any step for more detail; it redraws for the current
+                      theme.
+                    </p>
+                    <InterviewAgentFlowDiagrams isDarkMode={isDarkMode} />
                   </div>
                 </section>
               )}

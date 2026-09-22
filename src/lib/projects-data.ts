@@ -159,6 +159,7 @@ export const projects: Project[] = [
     description: 'Full-stack insurance enrollment & payroll platform (Django, React, React Native) deployed on Azure with autoscaling up to 400 containers, handling 16M+ requests across regions with automated disaster-recovery backups.',
     badges: ['Django', 'React.js', 'React Native', 'Azure'],
     tags: ['Insurance', 'Payroll', 'Cloud Scale', 'Enterprise'],
+    image: '/projects/2/screenshot-1.png',
     previewBg: 'linear-gradient(160deg, #1c1c2e 0%, #2c2c3e 50%, #1a1a2e 100%)',
     featured: true,
     detail: {
@@ -195,6 +196,13 @@ export const projects: Project[] = [
       ],
       outcome: 'The platform gave organizations a single system to manage employee group insurance enrollment and complete payroll cycles, reducing the need to operate separate vendor tools for each function. The infrastructure was built to elastically handle high-traffic periods (such as enrollment windows) across multiple regions while maintaining data durability guarantees appropriate for payroll and insurance records.',
       note: "Traffic and scaling figures (400 concurrent containers, ~16M requests) reflect the system's architected capacity, not necessarily sustained real-world usage at all times.",
+      gallery: [
+        '/projects/2/screenshot-1.png',
+        '/projects/2/screenshot-2.png',
+        '/projects/2/screenshot-3.png',
+        '/projects/2/screenshot-4.png',
+        '/projects/2/screenshot-5.png',
+      ],
     },
   },
   {
@@ -205,6 +213,7 @@ export const projects: Project[] = [
     description: 'Hybrid GraphRAG cognitive search system over 1.5M+ multimodal documents using Azure AI Search and Neo4j knowledge graphs — cut infrastructure costs 80% and accelerated retrieval by 60%.',
     badges: ['Azure AI Search', 'Neo4j', 'GraphRAG', 'OmniRAG'],
     tags: ['Cognitive Search', 'Knowledge Graph', 'Enterprise AI', 'Cost Optimization'],
+    image: '/projects/3/screenshot-1.png',
     previewBg: 'linear-gradient(160deg, #0a0f1a 0%, #0d1b2a 60%, #071020 100%)',
     featured: true,
     detail: {
@@ -234,6 +243,12 @@ export const projects: Project[] = [
         { title: 'Monitoring & Experiment Tracking', description: 'Set up monitoring and experiment tracking using Azure App Insights and Databricks MLflow, to maintain visibility into both system performance and retrieval quality over time.' },
       ],
       outcome: 'The system delivered a 1.5M+ document cognitive search platform for CSA Group with meaningfully lower infrastructure costs (80% reduction) and faster retrieval (60% acceleration) compared to the prior approach, while supporting both natural-language and structured queries through a single interface embedded in existing business tools.',
+      gallery: [
+        '/projects/3/screenshot-1.png',
+        '/projects/3/screenshot-2.png',
+        '/projects/3/screenshot-3.png',
+        '/projects/3/screenshot-4.png',
+      ],
     },
   },
   {
@@ -244,6 +259,7 @@ export const projects: Project[] = [
     description: 'Led a team of 5 building a multi-agent audit orchestration system (LangGraph, LangChain, Azure AI Foundry, Anthropic, Django), architected to scale from 5,000 to 10M+ users — cutting audit time by 75%.',
     badges: ['LangGraph', 'LangChain', 'Azure AI Foundry', 'Django'],
     tags: ['Multi-Agent AI', 'Audit Automation', 'Enterprise Scale', 'Team Lead'],
+    image: '/projects/4/screenshot-1.png',
     previewBg: 'linear-gradient(160deg, #1a0d00 0%, #3a1f00 50%, #110800 100%)',
     featured: false,
     detail: {
@@ -276,6 +292,12 @@ export const projects: Project[] = [
         { title: 'CI/CD & Scalability', description: "Guided the Azure DevOps CI/CD setup and the infrastructure decisions behind the system's scaling architecture." },
       ],
       outcome: "The system reduced audit turnaround time by 75%, replacing a manual, inconsistent assessor-matching process with a context-aware, multi-agent system capable of reasoning about audit requirements and assessor fit at scale — while being architected with infrastructure headroom to grow well beyond CSA Group's current audit volume.",
+      gallery: [
+        '/projects/4/screenshot-1.png',
+        '/projects/4/screenshot-2.png',
+        '/projects/4/screenshot-3.png',
+        '/projects/4/screenshot-4.png',
+      ],
     },
   },
   {
@@ -286,6 +308,7 @@ export const projects: Project[] = [
     description: 'Autonomous AI agent that joins live candidate interviews, conducts real-time conversational screening with barge-in support and eye-tracking engagement analysis, then delivers structured feedback — saving $10,000/month vs. a third-party service.',
     badges: ['Python', 'Playwright', 'ElevenLabs', 'Azure OpenAI'],
     tags: ['Autonomous Agent', 'Voice AI', 'Computer Vision', 'Cost Savings'],
+    image: '/projects/5/screenshot-1.png',
     previewBg: 'linear-gradient(160deg, #1a0d20 0%, #3a1a4a 50%, #100815 100%)',
     featured: false,
     detail: {
@@ -320,6 +343,11 @@ export const projects: Project[] = [
       outcomeStats: [
         { value: '~90%', label: 'Reduction in developer interview time for the hiring team' },
         { value: '$10K/mo', label: 'Savings vs. the previously used third-party screening service' },
+      ],
+      gallery: [
+        '/projects/5/screenshot-1.png',
+        '/projects/5/screenshot-2.png',
+        '/projects/5/screenshot-3.png',
       ],
     },
   },
