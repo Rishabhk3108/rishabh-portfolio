@@ -450,6 +450,7 @@ export const projects: Project[] = [
     description: 'Full-stack AI-powered Tender & RFP management system (Django, React) on Azure with automated document parsing, evaluation, and response generation using NLP and Pinecone vector search with OpenAI retrieval — cutting turnaround from days to hours.',
     badges: ['Django', 'React', 'Pinecone', 'OpenAI'],
     tags: ['NLP', 'Document Automation', 'Vector Search', 'Enterprise Scale'],
+    image: '/projects/8/screenshot-1.png',
     previewBg: 'linear-gradient(160deg, #0f1a0f 0%, #1e3a1e 50%, #080f08 100%)',
     featured: false,
     detail: {
@@ -491,6 +492,11 @@ export const projects: Project[] = [
       ],
       outcome: 'The system reduced proposal turnaround from days to hours, giving International SOS the ability to assess tender eligibility and produce draft responses far faster than the manual process it replaced, while Power BI reporting gave visibility into the tender pipeline as a whole.',
       note: 'The "20M+ users" figure describes the system’s architected scaling capacity, not current real-world usage volume.',
+      gallery: [
+        '/projects/8/screenshot-1.png',
+        '/projects/8/screenshot-2.png',
+        '/projects/8/screenshot-3.png',
+      ],
     },
   },
   {
