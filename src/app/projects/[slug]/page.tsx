@@ -8,6 +8,10 @@ import EnrollmentFlowDiagrams from './EnrollmentFlowDiagrams';
 import CognitiveSearchFlowDiagrams from './CognitiveSearchFlowDiagrams';
 import AuditFlowDiagrams from './AuditFlowDiagrams';
 import InterviewAgentFlowDiagrams from './InterviewAgentFlowDiagrams';
+import KioskForecastingFlowDiagrams from './KioskForecastingFlowDiagrams';
+import InsuranceAdvisorFlowDiagrams from './InsuranceAdvisorFlowDiagrams';
+import FaceAttendanceFlowDiagrams from './FaceAttendanceFlowDiagrams';
+import TenderRfpFlowDiagrams from './TenderRfpFlowDiagrams';
 
 const PROJECTS_NAV_IDX = 1;
 
@@ -477,6 +481,68 @@ export default function ProjectDetailPage({ params }: { params: Promise<{ slug: 
                       theme.
                     </p>
                     <InterviewAgentFlowDiagrams isDarkMode={isDarkMode} />
+                  </div>
+                </section>
+              )}
+
+              {/* ── Kiosk Forecasting Pipeline process flows (live HTML, not an image) ── */}
+              {project.slug === 'kiosk-forecasting-pipeline' && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <h2 className={`text-2xl font-bold mb-2 ${headingText}`}>Flow &amp; Architecture</h2>
+                    <p className={`text-sm mb-6 ${mutedText}`}>
+                      Seven flows across three frequencies — the recurring 15-day ingest-to-query cycle, the
+                      one-time static-to-temporal schema migration, and the continuous monitoring layer that
+                      watches it all run unattended. Hover (or tap) any step for more detail; it redraws for
+                      the current theme.
+                    </p>
+                    <KioskForecastingFlowDiagrams isDarkMode={isDarkMode} />
+                  </div>
+                </section>
+              )}
+
+              {/* ── Insurance Plan Advisor process flows (live HTML, not an image) ── */}
+              {project.slug === 'insurance-plan-advisor-chat-assistant' && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <h2 className={`text-2xl font-bold mb-2 ${headingText}`}>Flow &amp; Architecture</h2>
+                    <p className={`text-sm mb-6 ${mutedText}`}>
+                      Seven flows — portal integration, guided plan discovery, coverage calculation,
+                      personalized upsell, enrollment handoff, human escalation, and feedback capture. Hover
+                      (or tap) any step for more detail; it redraws for the current theme.
+                    </p>
+                    <InsuranceAdvisorFlowDiagrams isDarkMode={isDarkMode} />
+                  </div>
+                </section>
+              )}
+
+              {/* ── Face Recognition Attendance process flows (live HTML, not an image) ── */}
+              {project.slug === 'face-recognition-attendance-system' && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <h2 className={`text-2xl font-bold mb-2 ${headingText}`}>Flow &amp; Architecture</h2>
+                    <p className={`text-sm mb-6 ${mutedText}`}>
+                      Seven flows — enrollment, attendance capture, face-match verification, failure
+                      fallback, Time Master cross-validation, mobile/web access, and HR reporting. Hover (or
+                      tap) any step for more detail; it redraws for the current theme.
+                    </p>
+                    <FaceAttendanceFlowDiagrams isDarkMode={isDarkMode} />
+                  </div>
+                </section>
+              )}
+
+              {/* ── Tender & RFP Management System process flows (live HTML, not an image) ── */}
+              {project.slug === 'ai-tender-rfp-management-system' && (
+                <section className="px-6 lg:px-12 py-10">
+                  <div className="max-w-5xl mx-auto">
+                    <h2 className={`text-2xl font-bold mb-2 ${headingText}`}>Flow &amp; Architecture</h2>
+                    <p className={`text-sm mb-6 ${mutedText}`}>
+                      Seven flows — parallel requirement extraction, retrieval-driven eligibility scoring,
+                      the go/no-go checkpoint, draft generation, human review &amp; submission, Power BI
+                      reporting, and CI/CD. Hover (or tap) any step for more detail; it redraws for the
+                      current theme.
+                    </p>
+                    <TenderRfpFlowDiagrams isDarkMode={isDarkMode} />
                   </div>
                 </section>
               )}

@@ -358,6 +358,7 @@ export const projects: Project[] = [
     description: 'Python time-series pipeline that ingests kiosk data every 15 days to forecast per-kiosk earnings and traffic, storing results in a temporal knowledge graph in Neo4j — cutting manual analysis effort to 5% of prior levels.',
     badges: ['Python', 'Neo4j', 'Time-Series Forecasting', 'Knowledge Graph'],
     tags: ['Forecasting', 'Automation', 'Temporal Data', 'Business Impact'],
+    image: '/projects/6/screenshot-1.png',
     previewBg: 'linear-gradient(160deg, #0a1a0a 0%, #1a3a1a 50%, #050f05 100%)',
     featured: false,
     detail: {
@@ -397,6 +398,7 @@ export const projects: Project[] = [
     description: 'Chat assistant embedded in an existing insurance portal that helps users choose plans, calculate coverage, and get personalized recommendations — increasing customer satisfaction by 35% and cutting enrollment completion time by 47%.',
     badges: [],
     tags: ['Conversational AI', 'Insurance', 'Personalization', 'Customer Experience'],
+    image: '/projects/7/screenshot-1.png',
     previewBg: 'linear-gradient(160deg, #1a1200 0%, #3d2b00 50%, #110c00 100%)',
     featured: false,
     detail: {
@@ -430,6 +432,13 @@ export const projects: Project[] = [
       outcomeStats: [
         { value: '+35%', label: 'Increase in customer satisfaction' },
         { value: '-47%', label: 'Reduction in enrollment completion time' },
+      ],
+      gallery: [
+        '/projects/7/screenshot-1.png',
+        '/projects/7/screenshot-2.png',
+        '/projects/7/screenshot-3.png',
+        '/projects/7/screenshot-4.png',
+        '/projects/7/screenshot-5.png',
       ],
     },
   },
@@ -491,6 +500,7 @@ export const projects: Project[] = [
     description: 'End-to-end face-recognition attendance portal and mobile app (FastAPI, React, React Native, SQL Server) with an integrated Time Master module cross-validating logged hours against captured attendance — deployed org-wide on in-house servers.',
     badges: ['FastAPI', 'React', 'React Native', 'SQL Server'],
     tags: ['Computer Vision', 'Face Recognition', 'Attendance', 'Enterprise'],
+    image: '/projects/9/screenshot-2.png',
     previewBg: 'linear-gradient(160deg, #1a2535 0%, #2a3d52 50%, #111c28 100%)',
     featured: false,
     detail: {
@@ -523,6 +533,12 @@ export const projects: Project[] = [
         { title: 'Deployment & Rollout', description: 'Handled deployment on in-house servers and rollout across the organization.' },
       ],
       outcome: "The system replaced manual/card-based attendance tracking with a face-recognition-based flow used organization-wide, with the Time Master module providing working-hour tracking that's cross-validated against real attendance data rather than self-reported time.",
+      gallery: [
+        '/projects/9/screenshot-1.png',
+        '/projects/9/screenshot-2.png',
+        '/projects/9/screenshot-3.png',
+        '/projects/9/screenshot-4.png',
+      ],
     },
   },
 ];
